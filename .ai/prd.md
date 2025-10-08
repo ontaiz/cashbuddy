@@ -12,7 +12,7 @@ Użytkownicy tracą kontrolę nad codziennymi wydatkami, nie wiedzą ile i na co
 
 ## 3. Wymagania funkcjonalne
 1. Uwierzytelnianie i zarządzanie kontem
-   - Rejestracja e-mail + hasło ≥ 8 znaków z potwierdzeniem e-mail.
+   - Rejestracja e-mail + hasło
    - Logowanie i wylogowanie.
    - Panel użytkownika: zmiana hasła, usunięcie konta.
 2. Zarządzanie wydatkami (CRUD)
@@ -21,7 +21,7 @@ Użytkownicy tracą kontrolę nad codziennymi wydatkami, nie wiedzą ile i na co
    - Lista wydatków z sortowaniem oraz filtrowaniem po dacie i kwocie.
 3. Dashboard
    - Suma wszystkich wydatków.
-   - Wydatki w bieżącym miesiącu (kluczowa metryka na stronie głównej).
+   - Wydatki w bieżącym miesiącu
    - Wykres liniowy miesięcznych wydatków.
    - Lista Top 5 największych wydatków.
 4. UI i UX
@@ -45,8 +45,7 @@ Tytuł: Rejestracja konta
 Opis: Jako nowy użytkownik chcę się zarejestrować e-mailem i hasłem, aby uzyskać dostęp do aplikacji.
 Kryteria akceptacji:
 	1. Formularz wymaga poprawnego e-maila i hasła ≥ 8 znaków.
-	2. Po wysłaniu formularza otrzymuję e-mail potwierdzający.
-	3. Po potwierdzeniu mogę się zalogować.
+	2. Po wysłaniu formularza otrzymuję e-mail potwierdzający i zostaje zalogowany.
 
 ID: US-002
 Tytuł: Logowanie
