@@ -1,7 +1,8 @@
 # Dokument wymagań produktu (PRD) - CashBuddy
 
 ## 1. Przegląd produktu
-CashBuddy to webowa, responsywna aplikacja pomagająca użytkownikom śledzeniu codziennych wydatków w PLN. Koncentruje się na prostocie obsługi i  statystykach wydatków.
+CashBuddy to responsywna aplikacja internetowa zaprojektowana do łatwego i szybkiego śledzenia codziennych wydatków w złotówkach. Aplikacja stawia na intuicyjność i czytelność statystyk, które pomagają użytkownikom lepiej zarządzać domowym budżetem.
+
 
 ## 2. Problem użytkownika
 Użytkownicy tracą kontrolę nad codziennymi wydatkami, nie wiedzą ile i na co wydają oraz czy mieszczą się w planowanym budżecie. Brak przejrzystego narzędzia skutkuje:

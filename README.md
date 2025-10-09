@@ -127,13 +127,11 @@ The application will be available at `http://localhost:4321` (default Astro port
 
 ## Project Status
 
-**Current Version:** 0.0.1 (Initial Development)
-
 This project is in active development. The core features are being implemented according to the product requirements document.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License.
 
 ---
 
