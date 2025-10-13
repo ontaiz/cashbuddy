@@ -35,12 +35,18 @@ export async function getDashboardData(
 	supabase: SupabaseClient,
 	userId: string
 ): Promise<DashboardDataDto> {
-	// Get current month boundaries
+	// Get current month boundaries in local timezone to avoid UTC conversion issues
 	const now = new Date();
 	const currentYear = now.getFullYear();
 	const currentMonth = now.getMonth(); // 0-indexed
-	const startOfMonth = new Date(currentYear, currentMonth, 1).toISOString().split('T')[0];
-	const startOfNextMonth = new Date(currentYear, currentMonth + 1, 1).toISOString().split('T')[0];
+	
+	// Format dates in local timezone
+	const formatLocalDate = (year: number, month: number, day: number): string => {
+		return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+	};
+	
+	const startOfMonth = formatLocalDate(currentYear, currentMonth, 1);
+	const startOfNextMonth = formatLocalDate(currentYear, currentMonth + 1, 1);
 
 	// Execute all 4 queries in parallel using Promise.all
 	const [

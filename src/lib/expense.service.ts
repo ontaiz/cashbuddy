@@ -95,9 +95,12 @@ export async function getPaginatedExpenses(
 	}
 	if (end_date) {
 		// Add one day to end_date to make it inclusive
-		const endDateTime = new Date(end_date);
+		// Parse in local timezone to avoid UTC conversion issues
+		const [year, month, day] = end_date.split('-').map(Number);
+		const endDateTime = new Date(year, month - 1, day);
 		endDateTime.setDate(endDateTime.getDate() + 1);
-		query = query.lt('date', endDateTime.toISOString().split('T')[0]);
+		const endDateString = `${endDateTime.getFullYear()}-${String(endDateTime.getMonth() + 1).padStart(2, '0')}-${String(endDateTime.getDate()).padStart(2, '0')}`;
+		query = query.lt('date', endDateString);
 	}
 
 	// Apply sorting
