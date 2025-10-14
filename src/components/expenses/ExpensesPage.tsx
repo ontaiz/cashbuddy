@@ -97,7 +97,7 @@ const ExpensesPage: FC = () => {
   };
 
   return (
-    <main className="container mx-auto min-h-screen py-6 px-4 sm:py-8">
+    <div className="container mx-auto py-6 px-4 sm:py-8">
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Wydatki</h1>
@@ -186,7 +186,7 @@ const ExpensesPage: FC = () => {
         title="Usuń wydatek"
         description="Czy na pewno chcesz usunąć ten wydatek? Ta operacja jest nieodwracalna."
       />
-    </main>
+    </div>
   );
 };
 

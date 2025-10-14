@@ -1,27 +1,16 @@
 ---
+import AppLayout from '@/layouts/AppLayout.astro';
 import ExpensesPage from '@/components/expenses/ExpensesPage';
 import { Toaster } from '@/components/ui/sonner';
-import '@/styles/global.css';
 
 export const prerender = false;
 
-const title = 'Wydatki - CashBuddy';
+const title = 'Wydatki';
 const description = 'Zarządzaj swoimi codziennymi wydatkami w prosty i efektywny sposób';
 ---
 
-<!doctype html>
-<html lang="pl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content={description} />
-    <meta name="theme-color" content="#ffffff" />
-    <title>{title}</title>
-    <link rel="icon" type="image/png" href="/favicon.png" />
-  </head>
-  <body class="min-h-screen bg-background font-sans antialiased">
-    <ExpensesPage client:load />
-    <Toaster client:load position="top-right" richColors closeButton />
-  </body>
-</html>
+<AppLayout title={title} description={description}>
+  <ExpensesPage client:load />
+  <Toaster client:load position="top-right" richColors closeButton />
+</AppLayout>
 
