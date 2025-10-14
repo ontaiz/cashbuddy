@@ -15,7 +15,6 @@ export interface FilterState {
  * State for sorting expenses.
  */
 export interface SortState {
-  sortBy: 'date' | 'amount';
-  order: 'asc' | 'desc';
+  sortBy: "date" | "amount";
+  order: "asc" | "desc";
 }
-

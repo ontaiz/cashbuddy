@@ -1,9 +1,10 @@
-import { useState, type FC, type FormEvent } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { UserPlus } from 'lucide-react';
+import { useState, type FC, type FormEvent } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { UserPlus } from "lucide-react";
+import { toast } from "sonner";
 
 interface FormData {
   email: string;
@@ -23,9 +24,9 @@ interface FormErrors {
  */
 const RegisterForm: FC = () => {
   const [formData, setFormData] = useState<FormData>({
-    email: '',
-    password: '',
-    confirmPassword: '',
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
@@ -40,25 +41,25 @@ const RegisterForm: FC = () => {
 
     // Email validation
     if (!formData.email.trim()) {
-      newErrors.email = 'Adres e-mail jest wymagany';
+      newErrors.email = "Adres e-mail jest wymagany";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Wprowadź poprawny adres e-mail';
+      newErrors.email = "Wprowadź poprawny adres e-mail";
     }
 
     // Password validation
     if (!formData.password) {
-      newErrors.password = 'Hasło jest wymagane';
+      newErrors.password = "Hasło jest wymagane";
     } else if (formData.password.length < 8) {
-      newErrors.password = 'Hasło musi mieć co najmniej 8 znaków';
+      newErrors.password = "Hasło musi mieć co najmniej 8 znaków";
     } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password)) {
-      newErrors.password = 'Hasło musi zawierać małą literę, wielką literę i cyfrę';
+      newErrors.password = "Hasło musi zawierać małą literę, wielką literę i cyfrę";
     }
 
     // Confirm password validation
     if (!formData.confirmPassword) {
-      newErrors.confirmPassword = 'Potwierdzenie hasła jest wymagane';
+      newErrors.confirmPassword = "Potwierdzenie hasła jest wymagane";
     } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Hasła nie są identyczne';
+      newErrors.confirmPassword = "Hasła nie są identyczne";
     }
 
     setErrors(newErrors);
@@ -78,17 +79,29 @@ const RegisterForm: FC = () => {
     setIsSubmitting(true);
 
     try {
-      // TODO: Implement Supabase registration
-      console.log('Registration attempt:', { email: formData.email });
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // TODO: Handle successful registration
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        toast.error(data.error || "Błąd rejestracji");
+        return;
+      }
+
+      toast.success("Rejestracja zakończona pomyślnie!");
       setIsSuccess(true);
     } catch (error) {
-      console.error('Registration failed:', error);
-      // TODO: Display error message
+      console.error("Registration failed:", error);
+      toast.error("Wystąpił błąd podczas rejestracji");
     } finally {
       setIsSubmitting(false);
     }
@@ -112,15 +125,14 @@ const RegisterForm: FC = () => {
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold">Sprawdź swoją skrzynkę</CardTitle>
-          <CardDescription>
-            Rejestracja zakończona pomyślnie!
-          </CardDescription>
+          <CardDescription>Rejestracja zakończona pomyślnie!</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="rounded-lg border border-border bg-muted/50 p-4">
             <p className="text-sm text-muted-foreground">
-              Wysłaliśmy link weryfikacyjny na adres <span className="font-medium text-foreground">{formData.email}</span>.
-              Kliknij w link, aby potwierdzić swoje konto i rozpocząć korzystanie z CashBuddy.
+              Wysłaliśmy link weryfikacyjny na adres{" "}
+              <span className="font-medium text-foreground">{formData.email}</span>. Kliknij w link, aby potwierdzić
+              swoje konto i rozpocząć korzystanie z CashBuddy.
             </p>
           </div>
         </CardContent>
@@ -137,9 +149,7 @@ const RegisterForm: FC = () => {
     <Card className="w-full max-w-md">
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl font-bold">Utwórz konto</CardTitle>
-        <CardDescription>
-          Wprowadź swoje dane, aby założyć nowe konto
-        </CardDescription>
+        <CardDescription>Wprowadź swoje dane, aby założyć nowe konto</CardDescription>
       </CardHeader>
 
       <form onSubmit={handleSubmit}>
@@ -153,10 +163,10 @@ const RegisterForm: FC = () => {
               id="email"
               type="email"
               value={formData.email}
-              onChange={(e) => handleChange('email', e.target.value)}
+              onChange={(e) => handleChange("email", e.target.value)}
               placeholder="twoj@email.pl"
               aria-invalid={!!errors.email}
-              aria-describedby={errors.email ? 'email-error' : undefined}
+              aria-describedby={errors.email ? "email-error" : undefined}
               autoComplete="email"
               autoFocus
             />
@@ -176,10 +186,10 @@ const RegisterForm: FC = () => {
               id="password"
               type="password"
               value={formData.password}
-              onChange={(e) => handleChange('password', e.target.value)}
+              onChange={(e) => handleChange("password", e.target.value)}
               placeholder="••••••••"
               aria-invalid={!!errors.password}
-              aria-describedby={errors.password ? 'password-error' : undefined}
+              aria-describedby={errors.password ? "password-error" : undefined}
               autoComplete="new-password"
             />
             {errors.password && (
@@ -203,10 +213,10 @@ const RegisterForm: FC = () => {
               id="confirmPassword"
               type="password"
               value={formData.confirmPassword}
-              onChange={(e) => handleChange('confirmPassword', e.target.value)}
+              onChange={(e) => handleChange("confirmPassword", e.target.value)}
               placeholder="••••••••"
               aria-invalid={!!errors.confirmPassword}
-              aria-describedby={errors.confirmPassword ? 'confirmPassword-error' : undefined}
+              aria-describedby={errors.confirmPassword ? "confirmPassword-error" : undefined}
               autoComplete="new-password"
             />
             {errors.confirmPassword && (
@@ -218,12 +228,7 @@ const RegisterForm: FC = () => {
         </CardContent>
 
         <CardFooter className="flex flex-col space-y-4">
-          <Button
-            type="submit"
-            disabled={!isFormValid || isSubmitting}
-            className="w-full"
-            size="lg"
-          >
+          <Button type="submit" disabled={!isFormValid || isSubmitting} className="w-full" size="lg">
             {isSubmitting ? (
               <>
                 <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-background border-t-transparent" />
@@ -238,7 +243,7 @@ const RegisterForm: FC = () => {
           </Button>
 
           <p className="text-center text-sm text-muted-foreground">
-            Masz już konto?{' '}
+            Masz już konto?{" "}
             <a href="/login" className="font-medium text-foreground hover:underline">
               Zaloguj się
             </a>
@@ -250,4 +255,3 @@ const RegisterForm: FC = () => {
 };
 
 export default RegisterForm;
-

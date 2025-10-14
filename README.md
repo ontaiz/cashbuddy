@@ -52,11 +52,12 @@ CashBuddy addresses a common problem: users losing control over their daily expe
 - **[TypeScript 5](https://www.typescriptlang.org/)** - Static typing for better code quality and IDE support
 - **[Tailwind CSS 4](https://tailwindcss.com/)** - Utility-first CSS framework for rapid UI development
 - **[Shadcn/ui](https://ui.shadcn.com/)** - Accessible React component library
+- **[Zustand](https://zustand-demo.pmnd.rs/)** - Minimal state management for authentication
 
 ### Backend
 - **[Supabase](https://supabase.com/)** - Open-source Backend-as-a-Service
   - PostgreSQL database
-  - Built-in user authentication
+  - Built-in user authentication with `@supabase/ssr`
   - Multi-language SDK support
   - Self-hosting capabilities
 
@@ -100,7 +101,48 @@ Then edit `.env` file with your Supabase credentials and other required configur
 npm run dev
 ```
 
-The application will be available at `http://localhost:4321` (default Astro port).
+The application will be available at `http://localhost:3000`.
+
+## Authentication Architecture
+
+CashBuddy implements server-side authentication using Supabase Auth with the following architecture:
+
+### Key Components
+
+1. **Server-Side Session Management**
+   - Uses `@supabase/ssr` for proper SSR cookie handling
+   - Middleware validates sessions on every request
+   - Automatic redirects for protected routes
+
+2. **Authentication Flow**
+   - Login/Register pages → API endpoints (`/api/auth/login`, `/api/auth/logout`)
+   - Session stored in HTTP-only cookies for security
+   - User data passed from Astro to React components via props
+
+3. **Route Protection**
+   - **Public routes**: `/login`, `/register`, `/password-reset`, `/update-password`
+   - **Protected routes**: `/dashboard`, `/expenses`, and all API endpoints
+   - Logged-in users accessing auth pages are redirected to `/dashboard`
+   - Non-authenticated users accessing protected routes are redirected to `/login`
+
+4. **Client-Side State**
+   - Zustand store manages auth state in React components
+   - Initial user data hydrated from Astro server
+   - AuthStatus component displays user info and logout functionality
+
+### Password Reset Flow
+1. **Request Reset** - User enters email at `/password-reset`
+2. **Email Sent** - Supabase sends email with reset link containing auth token
+3. **Local Testing** - Check emails at `http://localhost:54324` (Inbucket)
+4. **Token Processing** - Browser client processes token from URL fragment
+5. **Update Password** - User sets new password at `/update-password`
+
+### Security Features
+- HTTP-only, secure cookies with SameSite protection
+- CSRF protection via cookie-based sessions
+- User data isolation - each user sees only their own expenses
+- Proper session validation on both server and API routes
+- Password reset tokens with expiration
 
 ## Available Scripts
 

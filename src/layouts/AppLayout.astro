@@ -1,5 +1,6 @@
 ---
-import '@/styles/global.css';
+import "@/styles/global.css";
+import { AuthStatus } from "@/components/auth";
 
 interface Props {
   title: string;
@@ -8,6 +9,7 @@ interface Props {
 
 const { title, description } = Astro.props;
 const currentPath = Astro.url.pathname;
+const user = Astro.locals.user;
 ---
 
 <!doctype html>
@@ -15,7 +17,7 @@ const currentPath = Astro.url.pathname;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content={description || 'CashBuddy - Zarządzaj swoimi wydatkami'} />
+    <meta name="description" content={description || "CashBuddy - Zarządzaj swoimi wydatkami"} />
     <meta name="theme-color" content="#ffffff" />
     <title>{title} - CashBuddy</title>
     <link rel="icon" type="image/png" href="/favicon.png" />
@@ -23,40 +25,37 @@ const currentPath = Astro.url.pathname;
   <body class="min-h-screen bg-background font-sans antialiased">
     <div class="flex min-h-screen flex-col">
       <!-- Header with Navigation -->
-      <header class="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <header
+        class="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+      >
         <div class="container mx-auto flex h-16 items-center px-4">
-          <a href="/dashboard" class="mr-8 flex items-center text-xl font-bold">
-            CashBuddy
-          </a>
-          
+          <a href="/dashboard" class="mr-8 flex items-center text-xl font-bold"> CashBuddy </a>
+
           <!-- Main Navigation -->
           <nav class="flex flex-1 items-center gap-6">
-            <a 
-              href="/dashboard" 
+            <a
+              href="/dashboard"
               class:list={[
                 "text-sm font-medium transition-colors hover:text-foreground/80",
-                currentPath === '/dashboard' ? "text-foreground" : "text-foreground/60"
+                currentPath === "/dashboard" ? "text-foreground" : "text-foreground/60",
               ]}
             >
               Dashboard
             </a>
-            <a 
-              href="/expenses" 
+            <a
+              href="/expenses"
               class:list={[
                 "text-sm font-medium transition-colors hover:text-foreground/80",
-                currentPath === '/expenses' ? "text-foreground" : "text-foreground/60"
+                currentPath === "/expenses" ? "text-foreground" : "text-foreground/60",
               ]}
             >
               Wydatki
             </a>
           </nav>
 
-          <!-- User Menu Placeholder -->
+          <!-- User Menu -->
           <div class="ml-auto flex items-center gap-4">
-            <!-- TODO: Add user avatar and dropdown menu -->
-            <div class="flex h-8 w-8 items-center justify-center rounded-full bg-muted">
-              <span class="text-xs font-medium">U</span>
-            </div>
+            {user && <AuthStatus client:load user={user} />}
           </div>
         </div>
       </header>
@@ -77,4 +76,3 @@ const currentPath = Astro.url.pathname;
     </div>
   </body>
 </html>
-

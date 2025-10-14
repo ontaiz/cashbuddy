@@ -1,14 +1,14 @@
-import { useState, type FC } from 'react';
-import { Button } from '@/components/ui/button';
-import { Plus } from 'lucide-react';
-import { toast } from 'sonner';
-import { useExpenses } from './hooks/useExpenses';
-import FilterControls from './FilterControls';
-import ExpensesDataTable from './ExpensesDataTable';
-import Pagination from './Pagination';
-import ExpenseFormModal from './ExpenseFormModal';
-import ConfirmationDialog from './ConfirmationDialog';
-import type { ExpenseDto, CreateExpenseCommand, UpdateExpenseCommand } from '@/types';
+import { useState, type FC } from "react";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import { toast } from "sonner";
+import { useExpenses } from "./hooks/useExpenses";
+import FilterControls from "./FilterControls";
+import ExpensesDataTable from "./ExpensesDataTable";
+import Pagination from "./Pagination";
+import ExpenseFormModal from "./ExpenseFormModal";
+import ConfirmationDialog from "./ConfirmationDialog";
+import type { ExpenseDto, CreateExpenseCommand, UpdateExpenseCommand } from "@/types";
 
 /**
  * Main container component for the expenses view.
@@ -58,15 +58,15 @@ const ExpensesPage: FC = () => {
     try {
       if (editingExpense) {
         await updateExpense(editingExpense.id, data as UpdateExpenseCommand);
-        toast.success('Wydatek został zaktualizowany');
+        toast.success("Wydatek został zaktualizowany");
       } else {
         await addExpense(data as CreateExpenseCommand);
-        toast.success('Wydatek został dodany');
+        toast.success("Wydatek został dodany");
       }
       setIsFormModalOpen(false);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Wystąpił nieoczekiwany błąd';
-      toast.error('Nie udało się zapisać wydatku', {
+      const errorMessage = err instanceof Error ? err.message : "Wystąpił nieoczekiwany błąd";
+      toast.error("Nie udało się zapisać wydatku", {
         description: errorMessage,
       });
       throw err; // Re-throw to keep modal open
@@ -78,21 +78,21 @@ const ExpensesPage: FC = () => {
 
     try {
       await deleteExpense(expenseToDelete);
-      toast.success('Wydatek został usunięty');
+      toast.success("Wydatek został usunięty");
       setIsDeleteDialogOpen(false);
       setExpenseToDelete(null);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Wystąpił nieoczekiwany błąd';
-      toast.error('Nie udało się usunąć wydatku', {
+      const errorMessage = err instanceof Error ? err.message : "Wystąpił nieoczekiwany błąd";
+      toast.error("Nie udało się usunąć wydatku", {
         description: errorMessage,
       });
     }
   };
 
-  const handleSort = (sortBy: 'date' | 'amount') => {
+  const handleSort = (sortBy: "date" | "amount") => {
     setSort({
       sortBy,
-      order: sort.sortBy === sortBy && sort.order === 'asc' ? 'desc' : 'asc',
+      order: sort.sortBy === sortBy && sort.order === "asc" ? "desc" : "asc",
     });
   };
 
@@ -101,9 +101,7 @@ const ExpensesPage: FC = () => {
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Wydatki</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Zarządzaj swoimi codziennymi wydatkami
-          </p>
+          <p className="mt-1 text-sm text-muted-foreground">Zarządzaj swoimi codziennymi wydatkami</p>
         </div>
         <Button onClick={handleAddClick} size="lg" className="sm:w-auto">
           <Plus className="mr-2 h-4 w-4" />
@@ -112,12 +110,7 @@ const ExpensesPage: FC = () => {
       </div>
 
       {/* Filters and sorting */}
-      <FilterControls
-        filters={filters}
-        sort={sort}
-        onFilterChange={setFilters}
-        onSortChange={setSort}
-      />
+      <FilterControls filters={filters} sort={sort} onFilterChange={setFilters} onSortChange={setSort} />
 
       {/* Error state */}
       {error && (
@@ -191,4 +184,3 @@ const ExpensesPage: FC = () => {
 };
 
 export default ExpensesPage;
-

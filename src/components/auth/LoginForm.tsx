@@ -1,9 +1,10 @@
-import { useState, type FC, type FormEvent } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { LogIn } from 'lucide-react';
+import { useState, type FC, type FormEvent } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { LogIn } from "lucide-react";
+import { toast } from "sonner";
 
 interface FormData {
   email: string;
@@ -21,8 +22,8 @@ interface FormErrors {
  */
 const LoginForm: FC = () => {
   const [formData, setFormData] = useState<FormData>({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
@@ -36,14 +37,14 @@ const LoginForm: FC = () => {
 
     // Email validation
     if (!formData.email.trim()) {
-      newErrors.email = 'Adres e-mail jest wymagany';
+      newErrors.email = "Adres e-mail jest wymagany";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Wprowadź poprawny adres e-mail';
+      newErrors.email = "Wprowadź poprawny adres e-mail";
     }
 
     // Password validation
     if (!formData.password) {
-      newErrors.password = 'Hasło jest wymagane';
+      newErrors.password = "Hasło jest wymagane";
     }
 
     setErrors(newErrors);
@@ -63,16 +64,31 @@ const LoginForm: FC = () => {
     setIsSubmitting(true);
 
     try {
-      // TODO: Implement Supabase authentication
-      console.log('Login attempt:', { email: formData.email });
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // TODO: Handle successful login and redirect
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        toast.error(data.error || "Błąd logowania");
+        return;
+      }
+
+      toast.success("Zalogowano pomyślnie!");
+
+      // Redirect to dashboard
+      window.location.href = "/dashboard";
     } catch (error) {
-      console.error('Login failed:', error);
-      // TODO: Display error message
+      console.error("Login failed:", error);
+      toast.error("Wystąpił błąd podczas logowania");
     } finally {
       setIsSubmitting(false);
     }
@@ -95,9 +111,7 @@ const LoginForm: FC = () => {
     <Card className="w-full max-w-md">
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl font-bold">Zaloguj się</CardTitle>
-        <CardDescription>
-          Wprowadź swoje dane, aby uzyskać dostęp do swojego konta
-        </CardDescription>
+        <CardDescription>Wprowadź swoje dane, aby uzyskać dostęp do swojego konta</CardDescription>
       </CardHeader>
 
       <form onSubmit={handleSubmit}>
@@ -111,10 +125,10 @@ const LoginForm: FC = () => {
               id="email"
               type="email"
               value={formData.email}
-              onChange={(e) => handleChange('email', e.target.value)}
+              onChange={(e) => handleChange("email", e.target.value)}
               placeholder="twoj@email.pl"
               aria-invalid={!!errors.email}
-              aria-describedby={errors.email ? 'email-error' : undefined}
+              aria-describedby={errors.email ? "email-error" : undefined}
               autoComplete="email"
               autoFocus
             />
@@ -134,10 +148,10 @@ const LoginForm: FC = () => {
               id="password"
               type="password"
               value={formData.password}
-              onChange={(e) => handleChange('password', e.target.value)}
+              onChange={(e) => handleChange("password", e.target.value)}
               placeholder="••••••••"
               aria-invalid={!!errors.password}
-              aria-describedby={errors.password ? 'password-error' : undefined}
+              aria-describedby={errors.password ? "password-error" : undefined}
               autoComplete="current-password"
             />
             {errors.password && (
@@ -149,22 +163,14 @@ const LoginForm: FC = () => {
 
           {/* Forgot password link */}
           <div className="text-right">
-            <a
-              href="/password-reset"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
+            <a href="/password-reset" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Zapomniałeś hasła?
             </a>
           </div>
         </CardContent>
 
         <CardFooter className="flex flex-col space-y-4">
-          <Button
-            type="submit"
-            disabled={!isFormValid || isSubmitting}
-            className="w-full"
-            size="lg"
-          >
+          <Button type="submit" disabled={!isFormValid || isSubmitting} className="w-full" size="lg">
             {isSubmitting ? (
               <>
                 <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-background border-t-transparent" />
@@ -179,7 +185,7 @@ const LoginForm: FC = () => {
           </Button>
 
           <p className="text-center text-sm text-muted-foreground">
-            Nie masz konta?{' '}
+            Nie masz konta?{" "}
             <a href="/register" className="font-medium text-foreground hover:underline">
               Zarejestruj się
             </a>
@@ -191,4 +197,3 @@ const LoginForm: FC = () => {
 };
 
 export default LoginForm;
-

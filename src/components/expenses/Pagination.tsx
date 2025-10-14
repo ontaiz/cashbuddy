@@ -1,7 +1,7 @@
-import type { FC } from 'react';
-import type { Pagination as PaginationType } from '@/types';
-import { Button } from '@/components/ui/button';
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
+import type { FC } from "react";
+import type { Pagination as PaginationType } from "@/types";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
 
 interface PaginationProps {
   pagination: PaginationType;
@@ -36,12 +36,12 @@ const Pagination: FC<PaginationProps> = ({ pagination, onPageChange }) => {
       pages.push(1);
 
       // Calculate range around current page
-      let start = Math.max(2, page - 1);
-      let end = Math.min(total_pages - 1, page + 1);
+      const start = Math.max(2, page - 1);
+      const end = Math.min(total_pages - 1, page + 1);
 
       // Add ellipsis after first page if needed
       if (start > 2) {
-        pages.push('...');
+        pages.push("...");
       }
 
       // Add pages around current page
@@ -51,7 +51,7 @@ const Pagination: FC<PaginationProps> = ({ pagination, onPageChange }) => {
 
       // Add ellipsis before last page if needed
       if (end < total_pages - 1) {
-        pages.push('...');
+        pages.push("...");
       }
 
       // Always show last page
@@ -71,8 +71,7 @@ const Pagination: FC<PaginationProps> = ({ pagination, onPageChange }) => {
     <div className="mt-6 flex flex-col items-center gap-4 border-t pt-4 sm:flex-row sm:justify-between">
       {/* Items info */}
       <div className="text-sm text-muted-foreground">
-        Wyświetlanie <span className="font-medium">{startItem}</span> -{' '}
-        <span className="font-medium">{endItem}</span> z{' '}
+        Wyświetlanie <span className="font-medium">{startItem}</span> - <span className="font-medium">{endItem}</span> z{" "}
         <span className="font-medium">{total_items}</span> wydatków
       </div>
 
@@ -104,7 +103,7 @@ const Pagination: FC<PaginationProps> = ({ pagination, onPageChange }) => {
         {/* Page numbers */}
         <div className="flex gap-1">
           {pageNumbers.map((pageNum, index) => {
-            if (pageNum === '...') {
+            if (pageNum === "...") {
               return (
                 <span
                   key={`ellipsis-${index}`}
@@ -122,12 +121,12 @@ const Pagination: FC<PaginationProps> = ({ pagination, onPageChange }) => {
             return (
               <Button
                 key={pageNumber}
-                variant={isCurrentPage ? 'default' : 'outline'}
+                variant={isCurrentPage ? "default" : "outline"}
                 size="icon"
                 onClick={() => onPageChange(pageNumber)}
                 aria-label={`Strona ${pageNumber}`}
-                aria-current={isCurrentPage ? 'page' : undefined}
-                className={isCurrentPage ? 'pointer-events-none' : ''}
+                aria-current={isCurrentPage ? "page" : undefined}
+                className={isCurrentPage ? "pointer-events-none" : ""}
               >
                 {pageNumber}
               </Button>
@@ -163,4 +162,3 @@ const Pagination: FC<PaginationProps> = ({ pagination, onPageChange }) => {
 };
 
 export default Pagination;
-

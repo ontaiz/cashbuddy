@@ -1,5 +1,5 @@
-import { useState, useEffect, type FC } from 'react';
-import type { ExpenseDto, CreateExpenseCommand, UpdateExpenseCommand } from '@/types';
+import { useState, useEffect, type FC } from "react";
+import type { ExpenseDto, CreateExpenseCommand, UpdateExpenseCommand } from "@/types";
 import {
   Dialog,
   DialogContent,
@@ -7,15 +7,15 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { CalendarIcon } from 'lucide-react';
-import { cn } from '@/lib/utils';
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { CalendarIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface ExpenseFormModalProps {
   isOpen: boolean;
@@ -42,28 +42,23 @@ interface FormErrors {
  */
 const formatDateToLocalString = (date: Date): string => {
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 };
 
 /**
  * Modal (dialog) containing form for adding or editing an expense.
  */
-const ExpenseFormModal: FC<ExpenseFormModalProps> = ({
-  isOpen,
-  onClose,
-  onSave,
-  initialData,
-}) => {
+const ExpenseFormModal: FC<ExpenseFormModalProps> = ({ isOpen, onClose, onSave, initialData }) => {
   const isEditMode = !!initialData;
 
   // Form state
   const [formData, setFormData] = useState<FormData>({
-    name: '',
-    amount: '',
+    name: "",
+    amount: "",
     date: formatDateToLocalString(new Date()),
-    description: '',
+    description: "",
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
@@ -75,7 +70,7 @@ const ExpenseFormModal: FC<ExpenseFormModalProps> = ({
    * to avoid UTC conversion issues
    */
   const parseLocalDate = (dateString: string): Date => {
-    const [year, month, day] = dateString.split('-').map(Number);
+    const [year, month, day] = dateString.split("-").map(Number);
     return new Date(year, month - 1, day);
   };
 
@@ -84,8 +79,8 @@ const ExpenseFormModal: FC<ExpenseFormModalProps> = ({
    */
   const formatLocalDate = (date: Date): string => {
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   };
 
@@ -98,15 +93,15 @@ const ExpenseFormModal: FC<ExpenseFormModalProps> = ({
         setFormData({
           name: initialData.name,
           amount: initialData.amount.toString(),
-          date: initialData.date.split('T')[0], // Extract YYYY-MM-DD from ISO datetime
-          description: initialData.description || '',
+          date: initialData.date.split("T")[0], // Extract YYYY-MM-DD from ISO datetime
+          description: initialData.description || "",
         });
       } else {
         setFormData({
-          name: '',
-          amount: '',
+          name: "",
+          amount: "",
           date: formatDateToLocalString(new Date()),
-          description: '',
+          description: "",
         });
       }
       setErrors({});
@@ -122,24 +117,24 @@ const ExpenseFormModal: FC<ExpenseFormModalProps> = ({
 
     // Name validation
     if (!formData.name.trim()) {
-      newErrors.name = 'Nazwa jest wymagana';
+      newErrors.name = "Nazwa jest wymagana";
     }
 
     // Amount validation
     if (!formData.amount.trim()) {
-      newErrors.amount = 'Kwota jest wymagana';
+      newErrors.amount = "Kwota jest wymagana";
     } else {
       const amount = parseFloat(formData.amount);
       if (isNaN(amount)) {
-        newErrors.amount = 'Kwota musi być liczbą';
+        newErrors.amount = "Kwota musi być liczbą";
       } else if (amount <= 0) {
-        newErrors.amount = 'Kwota musi być większa od 0';
+        newErrors.amount = "Kwota musi być większa od 0";
       }
     }
 
     // Date validation
     if (!formData.date) {
-      newErrors.date = 'Data jest wymagana';
+      newErrors.date = "Data jest wymagana";
     }
 
     setErrors(newErrors);
@@ -163,7 +158,7 @@ const ExpenseFormModal: FC<ExpenseFormModalProps> = ({
       // Parse in local timezone and set to noon to avoid timezone issues
       const dateTime = parseLocalDate(formData.date);
       dateTime.setHours(12, 0, 0, 0);
-      
+
       const data: CreateExpenseCommand | UpdateExpenseCommand = {
         name: formData.name.trim(),
         amount: parseFloat(formData.amount),
@@ -174,7 +169,7 @@ const ExpenseFormModal: FC<ExpenseFormModalProps> = ({
       await onSave(data);
       // onClose will be called by parent on success
     } catch (error) {
-      console.error('Failed to save expense:', error);
+      console.error("Failed to save expense:", error);
       // Error will be handled by parent component
     } finally {
       setIsSubmitting(false);
@@ -197,7 +192,7 @@ const ExpenseFormModal: FC<ExpenseFormModalProps> = ({
    */
   const handleDateSelect = (date: Date | undefined) => {
     if (date) {
-      handleChange('date', formatLocalDate(date));
+      handleChange("date", formatLocalDate(date));
       setDatePickerOpen(false);
     }
   };
@@ -207,10 +202,10 @@ const ExpenseFormModal: FC<ExpenseFormModalProps> = ({
    */
   const formatDate = (dateString: string): string => {
     const date = parseLocalDate(dateString);
-    return new Intl.DateTimeFormat('pl-PL', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
+    return new Intl.DateTimeFormat("pl-PL", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     }).format(date);
   };
 
@@ -218,13 +213,21 @@ const ExpenseFormModal: FC<ExpenseFormModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent 
+        className="sm:max-w-[500px]"
+        onInteractOutside={(e) => {
+          // Don't close dialog when clicking on calendar popover
+          if (datePickerOpen) {
+            e.preventDefault();
+          }
+        }}
+      >
         <DialogHeader>
-          <DialogTitle>{isEditMode ? 'Edytuj wydatek' : 'Dodaj wydatek'}</DialogTitle>
+          <DialogTitle>{isEditMode ? "Edytuj wydatek" : "Dodaj wydatek"}</DialogTitle>
           <DialogDescription>
             {isEditMode
-              ? 'Wprowadź zmiany i kliknij zapisz.'
-              : 'Wypełnij formularz i kliknij zapisz, aby dodać nowy wydatek.'}
+              ? "Wprowadź zmiany i kliknij zapisz."
+              : "Wypełnij formularz i kliknij zapisz, aby dodać nowy wydatek."}
           </DialogDescription>
         </DialogHeader>
 
@@ -241,7 +244,7 @@ const ExpenseFormModal: FC<ExpenseFormModalProps> = ({
                 onChange={(e) => handleChange('name', e.target.value)}
                 placeholder="np. Zakupy spożywcze"
                 aria-invalid={!!errors.name}
-                aria-describedby={errors.name ? 'name-error' : undefined}
+                aria-describedby={errors.name ? "name-error" : undefined}
                 autoFocus
               />
               {errors.name && (
@@ -262,10 +265,10 @@ const ExpenseFormModal: FC<ExpenseFormModalProps> = ({
                 step="0.01"
                 min="0.01"
                 value={formData.amount}
-                onChange={(e) => handleChange('amount', e.target.value)}
+                onChange={(e) => handleChange("amount", e.target.value)}
                 placeholder="0.00"
                 aria-invalid={!!errors.amount}
-                aria-describedby={errors.amount ? 'amount-error' : undefined}
+                aria-describedby={errors.amount ? "amount-error" : undefined}
               />
               {errors.amount && (
                 <p id="amount-error" className="text-sm text-destructive">
@@ -279,7 +282,7 @@ const ExpenseFormModal: FC<ExpenseFormModalProps> = ({
               <Label htmlFor="date">
                 Data <span className="text-destructive">*</span>
               </Label>
-              <Popover open={datePickerOpen} onOpenChange={setDatePickerOpen}>
+              <Popover open={datePickerOpen} onOpenChange={setDatePickerOpen} modal={true}>
                 <PopoverTrigger asChild>
                   <Button
                     id="date"
@@ -289,10 +292,10 @@ const ExpenseFormModal: FC<ExpenseFormModalProps> = ({
                       !formData.date && 'text-muted-foreground'
                     )}
                     aria-invalid={!!errors.date}
-                    aria-describedby={errors.date ? 'date-error' : undefined}
+                    aria-describedby={errors.date ? "date-error" : undefined}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {formData.date ? formatDate(formData.date) : 'Wybierz datę'}
+                    {formData.date ? formatDate(formData.date) : "Wybierz datę"}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
@@ -317,7 +320,7 @@ const ExpenseFormModal: FC<ExpenseFormModalProps> = ({
               <Textarea
                 id="description"
                 value={formData.description}
-                onChange={(e) => handleChange('description', e.target.value)}
+                onChange={(e) => handleChange("description", e.target.value)}
                 placeholder="Dodatkowe informacje o wydatku..."
                 rows={3}
               />
@@ -334,18 +337,14 @@ const ExpenseFormModal: FC<ExpenseFormModalProps> = ({
             >
               Anuluj
             </Button>
-            <Button
-              type="submit"
-              disabled={!isFormValid || isSubmitting}
-              className="w-full sm:w-auto"
-            >
+            <Button type="submit" disabled={!isFormValid || isSubmitting} className="w-full sm:w-auto">
               {isSubmitting ? (
                 <>
                   <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-background border-t-transparent" />
                   Zapisywanie...
                 </>
               ) : (
-                'Zapisz'
+                "Zapisz"
               )}
             </Button>
           </DialogFooter>
@@ -356,4 +355,3 @@ const ExpenseFormModal: FC<ExpenseFormModalProps> = ({
 };
 
 export default ExpenseFormModal;
-

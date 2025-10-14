@@ -1,5 +1,5 @@
-export { default as LoginForm } from './LoginForm';
-export { default as RegisterForm } from './RegisterForm';
-export { default as PasswordResetForm } from './PasswordResetForm';
-export { default as UpdatePasswordForm } from './UpdatePasswordForm';
-
+export { default as LoginForm } from "./LoginForm";
+export { default as RegisterForm } from "./RegisterForm";
+export { default as PasswordResetForm } from "./PasswordResetForm";
+export { default as UpdatePasswordForm } from "./UpdatePasswordForm";
+export { default as AuthStatus } from "./AuthStatus";

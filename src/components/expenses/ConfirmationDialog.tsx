@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { FC } from "react";
 import {
   Dialog,
   DialogContent,
@@ -6,9 +6,9 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { AlertTriangle } from 'lucide-react';
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { AlertTriangle } from "lucide-react";
 
 interface ConfirmationDialogProps {
   isOpen: boolean;
@@ -21,13 +21,7 @@ interface ConfirmationDialogProps {
 /**
  * Simple modal for confirming destructive actions, e.g., deleting an expense.
  */
-const ConfirmationDialog: FC<ConfirmationDialogProps> = ({
-  isOpen,
-  onClose,
-  onConfirm,
-  title,
-  description,
-}) => {
+const ConfirmationDialog: FC<ConfirmationDialogProps> = ({ isOpen, onClose, onConfirm, title, description }) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
@@ -55,4 +49,3 @@ const ConfirmationDialog: FC<ConfirmationDialogProps> = ({
 };
 
 export default ConfirmationDialog;
-

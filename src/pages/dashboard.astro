@@ -1,24 +1,21 @@
 ---
-import AppLayout from '@/layouts/AppLayout.astro';
-import { DashboardPage } from '@/components/dashboard';
-import { Toaster } from '@/components/ui/sonner';
+import AppLayout from "@/layouts/AppLayout.astro";
+import { DashboardPage } from "@/components/dashboard";
+import { Toaster } from "@/components/ui/sonner";
 
 export const prerender = false;
 
-const title = 'Dashboard';
-const description = 'Panel główny z podsumowaniem Twoich wydatków';
+const title = "Dashboard";
+const description = "Panel główny z podsumowaniem Twoich wydatków";
 ---
 
 <AppLayout title={title} description={description}>
   <div class="container mx-auto py-6 px-4 sm:py-8">
     <div class="mb-8">
       <h1 class="text-3xl font-bold tracking-tight">Dashboard</h1>
-      <p class="mt-1 text-sm text-muted-foreground">
-        Przegląd Twoich wydatków i statystyki finansowe
-      </p>
+      <p class="mt-1 text-sm text-muted-foreground">Przegląd Twoich wydatków i statystyki finansowe</p>
     </div>
     <DashboardPage client:load />
   </div>
   <Toaster client:load position="top-right" richColors closeButton />
 </AppLayout>
-

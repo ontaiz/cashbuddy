@@ -1,11 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
-import type {
-  PaginatedExpensesDto,
-  ExpenseDto,
-  CreateExpenseCommand,
-  UpdateExpenseCommand,
-} from '@/types';
-import type { FilterState, SortState } from '../types';
+import { useState, useEffect, useCallback } from "react";
+import type { PaginatedExpensesDto, ExpenseDto, CreateExpenseCommand, UpdateExpenseCommand } from "@/types";
+import type { FilterState, SortState } from "../types";
 
 /**
  * Custom hook for managing expenses state and API interactions.
@@ -19,8 +14,8 @@ export const useExpenses = () => {
     endDate: null,
   });
   const [sort, setSort] = useState<SortState>({
-    sortBy: 'date',
-    order: 'desc',
+    sortBy: "date",
+    order: "desc",
   });
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
@@ -37,16 +32,16 @@ export const useExpenses = () => {
       // Build query parameters
       const params = new URLSearchParams({
         page: page.toString(),
-        limit: '10',
+        limit: "10",
         sort_by: sort.sortBy,
         order: sort.order,
       });
 
       if (filters.startDate) {
-        params.append('start_date', filters.startDate);
+        params.append("start_date", filters.startDate);
       }
       if (filters.endDate) {
-        params.append('end_date', filters.endDate);
+        params.append("end_date", filters.endDate);
       }
 
       const response = await fetch(`/api/expenses?${params.toString()}`);
@@ -58,7 +53,7 @@ export const useExpenses = () => {
       const result: PaginatedExpensesDto = await response.json();
       setData(result);
     } catch (err) {
-      setError(err instanceof Error ? err : new Error('Unknown error occurred'));
+      setError(err instanceof Error ? err : new Error("Unknown error occurred"));
     } finally {
       setIsLoading(false);
     }
@@ -76,17 +71,17 @@ export const useExpenses = () => {
    */
   const addExpense = useCallback(
     async (command: CreateExpenseCommand): Promise<ExpenseDto> => {
-      const response = await fetch('/api/expenses', {
-        method: 'POST',
+      const response = await fetch("/api/expenses", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(command),
       });
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || 'Failed to create expense');
+        throw new Error(errorData.message || "Failed to create expense");
       }
 
       const newExpense: ExpenseDto = await response.json();
@@ -105,16 +100,16 @@ export const useExpenses = () => {
   const updateExpense = useCallback(
     async (id: string, command: UpdateExpenseCommand): Promise<ExpenseDto> => {
       const response = await fetch(`/api/expenses/${id}`, {
-        method: 'PATCH',
+        method: "PATCH",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(command),
       });
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || 'Failed to update expense');
+        throw new Error(errorData.message || "Failed to update expense");
       }
 
       const updatedExpense: ExpenseDto = await response.json();
@@ -144,14 +139,14 @@ export const useExpenses = () => {
 
       try {
         const response = await fetch(`/api/expenses/${id}`, {
-          method: 'DELETE',
+          method: "DELETE",
         });
 
         if (!response.ok) {
           // Revert optimistic update on error
           setData(previousData);
           const errorData = await response.json().catch(() => ({}));
-          throw new Error(errorData.message || 'Failed to delete expense');
+          throw new Error(errorData.message || "Failed to delete expense");
         }
 
         // Refresh the list to get accurate pagination
@@ -199,4 +194,3 @@ export const useExpenses = () => {
     refetch: fetchExpenses,
   };
 };
-

@@ -1,17 +1,16 @@
 ---
-import AuthLayout from '@/layouts/AuthLayout.astro';
-import RegisterForm from '@/components/auth/RegisterForm';
-import { Toaster } from '@/components/ui/sonner';
-import '@/styles/global.css';
+import AuthLayout from "@/layouts/AuthLayout.astro";
+import RegisterForm from "@/components/auth/RegisterForm";
+import { Toaster } from "@/components/ui/sonner";
+import "@/styles/global.css";
 
 export const prerender = false;
 
-const title = 'Zarejestruj się';
-const description = 'Utwórz nowe konto w CashBuddy';
+const title = "Zarejestruj się";
+const description = "Utwórz nowe konto w CashBuddy";
 ---
 
 <AuthLayout title={title} description={description}>
   <RegisterForm client:load />
   <Toaster client:load position="top-right" richColors closeButton />
 </AuthLayout>
-

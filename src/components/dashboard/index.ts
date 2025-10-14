@@ -4,4 +4,3 @@ export { EmptyState } from "./EmptyState";
 export { MonthlyExpensesChart } from "./MonthlyExpensesChart";
 export { StatCard } from "./StatCard";
 export { TopExpensesList } from "./TopExpensesList";
-

@@ -1,9 +1,10 @@
-import { useState, type FC, type FormEvent } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Mail } from 'lucide-react';
+import { useState, type FC, type FormEvent } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Mail } from "lucide-react";
+import { toast } from "sonner";
 
 interface FormData {
   email: string;
@@ -19,7 +20,7 @@ interface FormErrors {
  */
 const PasswordResetForm: FC = () => {
   const [formData, setFormData] = useState<FormData>({
-    email: '',
+    email: "",
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
@@ -34,9 +35,9 @@ const PasswordResetForm: FC = () => {
 
     // Email validation
     if (!formData.email.trim()) {
-      newErrors.email = 'Adres e-mail jest wymagany';
+      newErrors.email = "Adres e-mail jest wymagany";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Wprowadź poprawny adres e-mail';
+      newErrors.email = "Wprowadź poprawny adres e-mail";
     }
 
     setErrors(newErrors);
@@ -56,17 +57,28 @@ const PasswordResetForm: FC = () => {
     setIsSubmitting(true);
 
     try {
-      // TODO: Implement Supabase password reset
-      console.log('Password reset attempt:', { email: formData.email });
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // TODO: Handle successful password reset request
+      const response = await fetch("/api/auth/reset-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: formData.email,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        toast.error(data.error || "Błąd wysyłania linku resetującego");
+        return;
+      }
+
+      toast.success("Link do resetowania hasła został wysłany!");
       setIsSuccess(true);
     } catch (error) {
-      console.error('Password reset failed:', error);
-      // TODO: Display error message
+      console.error("Password reset failed:", error);
+      toast.error("Wystąpił błąd podczas resetowania hasła");
     } finally {
       setIsSubmitting(false);
     }
@@ -90,31 +102,23 @@ const PasswordResetForm: FC = () => {
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold">Sprawdź swoją skrzynkę</CardTitle>
-          <CardDescription>
-            Link do resetowania hasła został wysłany
-          </CardDescription>
+          <CardDescription>Link do resetowania hasła został wysłany</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="rounded-lg border border-border bg-muted/50 p-4">
             <p className="text-sm text-muted-foreground">
-              Wysłaliśmy link do resetowania hasła na adres{' '}
-              <span className="font-medium text-foreground">{formData.email}</span>.
-              Kliknij w link, aby ustawić nowe hasło.
+              Wysłaliśmy link do resetowania hasła na adres{" "}
+              <span className="font-medium text-foreground">{formData.email}</span>. Kliknij w link, aby ustawić nowe
+              hasło.
             </p>
           </div>
-          <p className="text-xs text-muted-foreground text-center">
-            Jeśli nie widzisz wiadomości, sprawdź folder spam
-          </p>
+          <p className="text-xs text-muted-foreground text-center">Jeśli nie widzisz wiadomości, sprawdź folder spam</p>
         </CardContent>
         <CardFooter className="flex flex-col space-y-2">
           <Button asChild variant="outline" className="w-full">
             <a href="/login">Powrót do logowania</a>
           </Button>
-          <Button
-            variant="ghost"
-            onClick={() => setIsSuccess(false)}
-            className="w-full"
-          >
+          <Button variant="ghost" onClick={() => setIsSuccess(false)} className="w-full">
             Wyślij ponownie
           </Button>
         </CardFooter>
@@ -126,9 +130,7 @@ const PasswordResetForm: FC = () => {
     <Card className="w-full max-w-md">
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl font-bold">Resetuj hasło</CardTitle>
-        <CardDescription>
-          Wprowadź swój adres e-mail, a wyślemy Ci link do resetowania hasła
-        </CardDescription>
+        <CardDescription>Wprowadź swój adres e-mail, a wyślemy Ci link do resetowania hasła</CardDescription>
       </CardHeader>
 
       <form onSubmit={handleSubmit}>
@@ -145,7 +147,7 @@ const PasswordResetForm: FC = () => {
               onChange={(e) => handleChange(e.target.value)}
               placeholder="twoj@email.pl"
               aria-invalid={!!errors.email}
-              aria-describedby={errors.email ? 'email-error' : undefined}
+              aria-describedby={errors.email ? "email-error" : undefined}
               autoComplete="email"
               autoFocus
             />
@@ -158,12 +160,7 @@ const PasswordResetForm: FC = () => {
         </CardContent>
 
         <CardFooter className="flex flex-col space-y-4">
-          <Button
-            type="submit"
-            disabled={!isFormValid || isSubmitting}
-            className="w-full"
-            size="lg"
-          >
+          <Button type="submit" disabled={!isFormValid || isSubmitting} className="w-full" size="lg">
             {isSubmitting ? (
               <>
                 <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-background border-t-transparent" />
@@ -178,7 +175,7 @@ const PasswordResetForm: FC = () => {
           </Button>
 
           <p className="text-center text-sm text-muted-foreground">
-            Pamiętasz hasło?{' '}
+            Pamiętasz hasło?{" "}
             <a href="/login" className="font-medium text-foreground hover:underline">
               Zaloguj się
             </a>
@@ -190,4 +187,3 @@ const PasswordResetForm: FC = () => {
 };
 
 export default PasswordResetForm;
-
