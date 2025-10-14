@@ -47,6 +47,8 @@ Opis: Jako nowy użytkownik chcę się zarejestrować e-mailem i hasłem, aby uz
 Kryteria akceptacji:
 	1. Formularz wymaga poprawnego e-maila i hasła ≥ 8 znaków.
 	2. Po wysłaniu formularza otrzymuję e-mail potwierdzający i zostaje zalogowany.
+	3. Rejestracja odbywa się na specjalnie dedykowanej do tego stronie.
+	
 
 ID: US-002
 Tytuł: Logowanie
@@ -54,12 +56,18 @@ Opis: Jako zarejestrowany użytkownik chcę się zalogować, aby uzyskać dostę
 Kryteria akceptacji:
 	1. Podanie poprawnych danych przenosi mnie na dashboard.
 	2. Błędne dane zwracają komunikat o błędzie bez ujawniania szczegółów.
+	3. Uytkownik nie moe korzystać z funkcji zarządzania wydatkami i wyświetlaniem dahsbordu bez wcześniejszego zalogowania się
+	4. Niezalogowany uzytkownik ma dostęp do strony logowania i rejestracji
+	5. Logowanie odbywa się na specjalnie dedykowanej do tego stronie
+	6. Logowanie moe być poprzez przycisk w prawym górym rogu
+	7. Niezalogowany yytkownik powinien miec mołiwość odzyskania hasłą - (resetowania)
 
 ID: US-003
 Tytuł: Wylogowanie
 Opis: Jako użytkownik chcę się wylogować, aby zabezpieczyć moje dane na współdzielonych urządzeniach.
 Kryteria akceptacji:
 	1. Kliknięcie „Wyloguj" kończy sesję i przekierowuje na stronę logowania.
+	2. Wylogowywanie się poprzez przicisk w prawym górym rogu
 
 ID: US-004
 Tytuł: Dodanie wydatku

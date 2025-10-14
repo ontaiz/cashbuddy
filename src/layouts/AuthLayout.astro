@@ -1,0 +1,45 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description || 'CashBuddy - Zarządzaj swoimi wydatkami'} />
+    <meta name="theme-color" content="#ffffff" />
+    <title>{title} - CashBuddy</title>
+    <link rel="icon" type="image/png" href="/favicon.png" />
+  </head>
+  <body class="min-h-screen bg-background font-sans antialiased">
+    <div class="flex min-h-screen flex-col">
+      <!-- Header -->
+      <header class="border-b border-border">
+        <div class="container mx-auto flex h-16 items-center px-4">
+          <a href="/" class="text-xl font-bold">CashBuddy</a>
+        </div>
+      </header>
+
+      <!-- Main content -->
+      <main class="flex flex-1 items-center justify-center p-4">
+        <slot />
+      </main>
+
+      <!-- Footer -->
+      <footer class="border-t border-border">
+        <div class="container mx-auto px-4 py-6">
+          <p class="text-center text-sm text-muted-foreground">
+            © {new Date().getFullYear()} CashBuddy. Wszystkie prawa zastrzeżone.
+          </p>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
+
