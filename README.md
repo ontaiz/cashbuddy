@@ -61,6 +61,15 @@ CashBuddy addresses a common problem: users losing control over their daily expe
   - Multi-language SDK support
   - Self-hosting capabilities
 
+### Testing
+- **[Vitest](https://vitest.dev/)** - Modern, fast test runner compatible with Vite
+- **[@vitest/ui](https://vitest.dev/guide/ui.html)** - Browser-based UI for test visualization and debugging
+- **[React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)** - Testing React components with user-focused approach
+- **[@testing-library/user-event](https://testing-library.com/docs/user-event/intro)** - Advanced user interaction simulation
+- **[Playwright](https://playwright.dev/)** - Modern End-to-End testing framework
+- **[Mock Service Worker (MSW)](https://mswjs.io/)** - API mocking at the network level for integration tests
+- **[@faker-js/faker](https://fakerjs.dev/)** - Realistic test data generation
+
 ### CI/CD & Hosting
 - **GitHub Actions** - Continuous Integration and Deployment pipelines
 - **DigitalOcean** - Application hosting via Docker images
@@ -155,6 +164,10 @@ CashBuddy implements server-side authentication using Supabase Auth with the fol
 | `npm run lint` | Run ESLint to check for code quality issues |
 | `npm run lint:fix` | Run ESLint and automatically fix fixable issues |
 | `npm run format` | Format code using Prettier |
+| `npm run test` | Run unit and integration tests with Vitest |
+| `npm run test:ui` | Run tests with Vitest UI for visual debugging |
+| `npm run test:coverage` | Run tests with coverage reporting |
+| `npm run test:e2e` | Run End-to-End tests with Playwright |
 
 ## Project Scope
 

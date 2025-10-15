@@ -35,4 +35,3 @@ export const createSupabaseServerInstance = (context: { headers: Headers; cookie
   return supabase;
 };
 
-export const DEFAULT_USER_ID = "dfa4a911-84fb-40b6-94a6-e7ef706b61b0";
