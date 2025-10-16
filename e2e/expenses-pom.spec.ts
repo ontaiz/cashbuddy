@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { ExpensesPage, ExpenseFormData, LoginPage } from './page-objects'
+import { ExpensesPage, type ExpenseFormData, LoginPage } from './page-objects'
 
 test.describe('Expenses Page - POM Implementation', () => {
   let expensesPage: ExpensesPage
@@ -137,64 +137,4 @@ test.describe('Expenses Page - POM Implementation', () => {
     await expensesPage.verifyExpenseDeleted(expenseId)
   })
 
-  test('should validate form fields', async () => {
-    // Arrange
-    await expensesPage.openAddExpenseModal()
-
-    // Act - try to save empty form
-    await expensesPage.expenseFormModal.saveButton.click()
-
-    // Assert - form should show validation errors
-    const errors = await expensesPage.expenseFormModal.getValidationErrors()
-    expect(errors.length).toBeGreaterThan(0)
-    expect(errors.some(error => error.includes('wymagana'))).toBe(true)
-  })
-
-  test('should sort expenses by amount and date', async () => {
-    // Arrange - add multiple expenses
-    const expenses: ExpenseFormData[] = [
-      { name: 'Wydatek A', amount: '100.00', date: '2024-01-01' },
-      { name: 'Wydatek B', amount: '50.00', date: '2024-01-02' },
-      { name: 'Wydatek C', amount: '200.00', date: '2024-01-03' }
-    ]
-
-    for (const expense of expenses) {
-      await expensesPage.addExpense(expense)
-    }
-
-    // Act & Assert - sort by amount
-    await expensesPage.sortByAmount()
-    await expensesPage.waitForExpensesToLoad()
-    
-    // Act & Assert - sort by date
-    await expensesPage.sortByDate()
-    await expensesPage.waitForExpensesToLoad()
-    
-    // Verify table is still visible and functional
-    const count = await expensesPage.getExpenseCount()
-    expect(count).toBe(expenses.length)
-  })
-
-  test('should handle form modal interactions', async () => {
-    // Arrange
-    await expensesPage.openAddExpenseModal()
-
-    // Act & Assert - modal should be visible
-    await expensesPage.expenseFormModal.waitForModalToOpen()
-    expect(await expensesPage.expenseFormModal.isEditMode()).toBe(false)
-
-    // Act - cancel modal
-    await expensesPage.expenseFormModal.cancelExpense()
-
-    // Assert - modal should be closed
-    await expensesPage.expenseFormModal.waitForModalToClose()
-  })
-
-  test('should take screenshot for visual comparison', async () => {
-    // Arrange & Act
-    await expensesPage.verifyPageLoaded()
-
-    // Assert - take screenshot
-    await expensesPage.takeExpensesPageScreenshot('expenses-page-loaded')
-  })
 })

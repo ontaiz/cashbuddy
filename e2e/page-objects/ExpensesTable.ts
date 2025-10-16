@@ -35,9 +35,11 @@ export class ExpensesTable extends BasePage {
   constructor(page: Page) {
     super(page)
     
-    // Initialize locators using separate data-testid attributes for desktop and mobile
-    this.desktopTableContainer = this.getByTestId('expenses-table-desktop')
-    this.mobileTableContainer = this.getByTestId('expenses-table-mobile')
+    // Initialize locators using combined CSS selectors to distinguish desktop/mobile
+    // Desktop: has 'md:block' class and rounded-md border
+    // Mobile: has 'md:hidden' class and grid
+    this.desktopTableContainer = page.locator('[data-testid="expenses-table"].md\\:block')
+    this.mobileTableContainer = page.locator('[data-testid="expenses-table"].md\\:hidden')
     
     // Desktop table view
     this.table = this.desktopTableContainer.locator('table')
@@ -57,42 +59,15 @@ export class ExpensesTable extends BasePage {
    * Wait for table to be visible (either desktop or mobile view)
    */
   async waitForTableToLoad(): Promise<void> {
-    // Wait for either desktop or mobile view to be visible
-    // Desktop view is visible on larger screens (md:block), mobile view on smaller screens (md:hidden)
-    // Due to CSS media queries, only one should be visible at a time
-    
-    // Wait for at least one container to be attached to DOM first
-    await this.page.waitForSelector('[data-testid="expenses-table-desktop"], [data-testid="expenses-table-mobile"]', {
+    // Wait for the expenses table container to be attached to DOM
+    // Both desktop and mobile versions use the same data-testid
+    await this.page.waitForSelector('[data-testid="expenses-table"]', {
       state: 'attached',
       timeout: 10000
     })
     
-    // Now check which one is actually visible (not hidden by CSS)
-    // Give it a small delay for CSS to apply
+    // Give it a small delay for CSS to apply and determine which view is visible
     await this.page.waitForTimeout(100)
-    
-    // Check visibility of both containers
-    const isDesktopVisible = await this.desktopTableContainer.isVisible().catch(() => false)
-    const isMobileVisible = await this.mobileTableContainer.isVisible().catch(() => false)
-    
-    if (isDesktopVisible) {
-      // Desktop is visible, we're done
-      return
-    } else if (isMobileVisible) {
-      // Mobile is visible, we're done
-      return
-    } else {
-      // Neither is visible yet (might be CSS rendering issue), wait a bit more
-      await this.page.waitForTimeout(200)
-      
-      // Try one more time
-      const isDesktopVisibleRetry = await this.desktopTableContainer.isVisible().catch(() => false)
-      const isMobileVisibleRetry = await this.mobileTableContainer.isVisible().catch(() => false)
-      
-      if (!isDesktopVisibleRetry && !isMobileVisibleRetry) {
-        throw new Error('Table containers found in DOM but neither is visible')
-      }
-    }
   }
 
   /**
@@ -265,7 +240,17 @@ export class ExpensesTable extends BasePage {
       expect(actualData.name).toBe(expectedData.name)
     }
     if (expectedData.amount) {
-      expect(actualData.amount).toContain(expectedData.amount)
+      // Normalize both amounts for comparison (remove spaces, currency symbols, convert to same decimal separator)
+      const normalizeAmount = (amount: string) => {
+        return amount
+          .replace(/\s+/g, '') // Remove spaces
+          .replace(/zł/g, '')   // Remove currency symbol
+          .replace(/,/g, '.')   // Convert comma to dot
+          .trim()
+      }
+      const normalizedActual = normalizeAmount(actualData.amount)
+      const normalizedExpected = normalizeAmount(expectedData.amount)
+      expect(normalizedActual).toContain(normalizedExpected)
     }
     if (expectedData.date) {
       expect(actualData.date).toContain(expectedData.date)

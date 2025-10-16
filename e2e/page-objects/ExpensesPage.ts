@@ -42,7 +42,8 @@ export class ExpensesPage extends BasePage {
     this.addFirstExpenseButton = this.getByTestId('add-first-expense-button')
     this.pageTitle = page.getByRole('heading', { name: /wydatki/i, level: 1 })
     this.emptyStateContainer = page.locator('.flex.flex-col.items-center.justify-center.rounded-lg.border.border-dashed')
-    this.loadingSpinner = page.locator('.animate-spin')
+    // Loading spinner within the status role container (main page loading)
+    this.loadingSpinner = page.locator('[role="status"] .animate-spin')
     this.errorMessage = page.locator('[role="alert"]')
     
     // Filter and pagination

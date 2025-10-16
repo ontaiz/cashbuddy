@@ -17,7 +17,7 @@ interface ExpensesDataTableProps {
  * Component displaying expenses in table format.
  * Table columns are interactive and allow sorting.
  */
-const ExpensesDataTable: FC<ExpensesDataTableProps> = ({ expenses, onEdit, onDelete, onSort, 'data-testid': testId }) => {
+const ExpensesDataTable: FC<ExpensesDataTableProps> = ({ expenses, onEdit, onDelete, onSort, 'data-testid': testId = 'expenses-table' }) => {
   /**
    * Formats amount to PLN currency format
    */
@@ -43,7 +43,7 @@ const ExpensesDataTable: FC<ExpensesDataTableProps> = ({ expenses, onEdit, onDel
   return (
     <>
       {/* Desktop Table View */}
-      <div className="hidden rounded-md border md:block" data-testid={`${testId}-desktop`}>
+      <div className="hidden rounded-md border md:block" data-testid={testId}>
         <Table>
           <TableHeader>
             <TableRow>
@@ -104,7 +104,7 @@ const ExpensesDataTable: FC<ExpensesDataTableProps> = ({ expenses, onEdit, onDel
       </div>
 
       {/* Mobile Card View */}
-      <div className="grid gap-4 md:hidden" data-testid={`${testId}-mobile`}>
+      <div className="grid gap-4 md:hidden" data-testid={testId}>
         {expenses.map((expense) => (
           <Card key={expense.id} data-testid={`expense-card-${expense.id}`}>
             <CardHeader className="pb-3">
