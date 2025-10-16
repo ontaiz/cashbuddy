@@ -31,10 +31,6 @@ jobs:
     needs: lint
     runs-on: ubuntu-latest
     
-    env:
-      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-      SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
-    
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -68,6 +64,8 @@ jobs:
     env:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+      E2E_USERNAME: ${{ secrets.E2E_USERNAME }}
+      E2E_PASSWORD: ${{ secrets.E2E_PASSWORD }}
     
     steps:
       - name: Checkout code
