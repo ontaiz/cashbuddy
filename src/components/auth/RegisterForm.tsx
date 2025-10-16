@@ -99,8 +99,7 @@ const RegisterForm: FC = () => {
 
       toast.success("Rejestracja zakończona pomyślnie!");
       setIsSuccess(true);
-    } catch (error) {
-      console.error("Registration failed:", error);
+    } catch {
       toast.error("Wystąpił błąd podczas rejestracji");
     } finally {
       setIsSubmitting(false);

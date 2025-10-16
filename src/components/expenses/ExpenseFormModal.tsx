@@ -170,7 +170,6 @@ const ExpenseFormModal: FC<ExpenseFormModalProps> = ({ isOpen, onClose, onSave, 
       // onClose will be called by parent on success
     } catch (error) {
       console.error("Failed to save expense:", error);
-      // Error will be handled by parent component
     } finally {
       setIsSubmitting(false);
     }

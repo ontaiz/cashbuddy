@@ -72,8 +72,6 @@ export const POST: APIRoute = async (context) => {
     // Call service to create expense
     const newExpense = await createExpense(supabase, userId, validationResult.data);
 
-    console.log("New expense:", newExpense);
-
     // Return success response with created expense
     return new Response(JSON.stringify(newExpense), {
       status: 201,
@@ -82,8 +80,6 @@ export const POST: APIRoute = async (context) => {
   } catch (error) {
     // Handle service-specific errors
     if (error instanceof ExpenseServiceError) {
-      console.error("Expense service error:", error.message, error.details);
-
       return new Response(
         JSON.stringify({
           error: "Failed to create expense",
@@ -97,7 +93,6 @@ export const POST: APIRoute = async (context) => {
     }
 
     // Handle unexpected errors
-    console.error("Unexpected error in POST /api/expenses:", error);
 
     return new Response(
       JSON.stringify({
@@ -179,8 +174,6 @@ export const GET: APIRoute = async (context) => {
   } catch (error) {
     // Handle service-specific errors
     if (error instanceof ExpenseServiceError) {
-      console.error("Expense service error:", error.message, error.details);
-
       return new Response(
         JSON.stringify({
           error: "Failed to retrieve expenses",
@@ -194,7 +187,6 @@ export const GET: APIRoute = async (context) => {
     }
 
     // Handle unexpected errors
-    console.error("Unexpected error in GET /api/expenses:", error);
 
     return new Response(
       JSON.stringify({

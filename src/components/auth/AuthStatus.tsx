@@ -52,8 +52,7 @@ const AuthStatus: FC<AuthStatusProps> = ({ user }) => {
 
       // Redirect to login
       window.location.href = "/login";
-    } catch (error) {
-      console.error("Logout failed:", error);
+    } catch {
       toast.error("Wystąpił błąd podczas wylogowania");
     } finally {
       setIsLoggingOut(false);

@@ -137,8 +137,7 @@ const UpdatePasswordForm: FC = () => {
 
       toast.success("Hasło zostało zaktualizowane!");
       setIsSuccess(true);
-    } catch (error) {
-      console.error("Password update failed:", error);
+    } catch {
       toast.error("Wystąpił błąd podczas aktualizacji hasła");
     } finally {
       setIsSubmitting(false);

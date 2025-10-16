@@ -30,8 +30,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     return new Response(JSON.stringify({ user: data.user }), {
       status: 200,
     });
-  } catch (error) {
-    console.error("Registration error:", error);
+  } catch {
     return new Response(JSON.stringify({ error: "Wystąpił błąd podczas rejestracji" }), { status: 500 });
   }
 };

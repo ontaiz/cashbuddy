@@ -48,8 +48,6 @@ export const GET: APIRoute = async (context) => {
   } catch (error) {
     // Handle service-specific errors
     if (error instanceof DashboardServiceError) {
-      console.error("Dashboard service error:", error.message, error.details);
-
       return new Response(
         JSON.stringify({
           error: "Failed to retrieve dashboard data",
@@ -63,7 +61,6 @@ export const GET: APIRoute = async (context) => {
     }
 
     // Handle unexpected errors
-    console.error("Unexpected error in GET /api/dashboard:", error);
 
     return new Response(
       JSON.stringify({

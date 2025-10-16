@@ -76,8 +76,7 @@ const PasswordResetForm: FC = () => {
 
       toast.success("Link do resetowania hasła został wysłany!");
       setIsSuccess(true);
-    } catch (error) {
-      console.error("Password reset failed:", error);
+    } catch {
       toast.error("Wystąpił błąd podczas resetowania hasła");
     } finally {
       setIsSubmitting(false);

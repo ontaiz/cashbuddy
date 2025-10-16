@@ -89,7 +89,7 @@ export const GET: APIRoute = async (context) => {
 
     // Transform to ExpenseDto (omit user_id for security)
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { user_id: _, ...expenseDto }: { user_id: string } & ExpenseDto = expense;
+    const { user_id, ...expenseDto }: { user_id: string } & ExpenseDto = expense;
 
     // Return success response with the expense
     return new Response(JSON.stringify(expenseDto), {
@@ -99,8 +99,6 @@ export const GET: APIRoute = async (context) => {
   } catch (error) {
     // Handle service-specific errors
     if (error instanceof ExpenseServiceError) {
-      console.error("Expense service error:", error.message, error.details);
-
       return new Response(
         JSON.stringify({
           error: "Failed to retrieve expense",
@@ -114,7 +112,6 @@ export const GET: APIRoute = async (context) => {
     }
 
     // Handle unexpected errors
-    console.error("Unexpected error in GET /api/expenses/{id}:", error);
 
     return new Response(
       JSON.stringify({
@@ -256,8 +253,6 @@ export const PATCH: APIRoute = async (context) => {
   } catch (error) {
     // Handle service-specific errors
     if (error instanceof ExpenseServiceError) {
-      console.error("Expense service error:", error.message, error.details);
-
       return new Response(
         JSON.stringify({
           error: "Failed to update expense",
@@ -271,7 +266,6 @@ export const PATCH: APIRoute = async (context) => {
     }
 
     // Handle unexpected errors
-    console.error("Unexpected error in PATCH /api/expenses/{id}:", error);
 
     return new Response(
       JSON.stringify({
@@ -371,8 +365,6 @@ export const DELETE: APIRoute = async (context) => {
   } catch (error) {
     // Handle service-specific errors
     if (error instanceof ExpenseServiceError) {
-      console.error("Expense service error:", error.message, error.details);
-
       return new Response(
         JSON.stringify({
           error: "Failed to delete expense",
@@ -386,7 +378,6 @@ export const DELETE: APIRoute = async (context) => {
     }
 
     // Handle unexpected errors
-    console.error("Unexpected error in DELETE /api/expenses/{id}:", error);
 
     return new Response(
       JSON.stringify({

@@ -90,8 +90,7 @@ const LoginForm: FC = () => {
 
       // Redirect to dashboard
       window.location.href = "/dashboard";
-    } catch (error) {
-      console.error("Login failed:", error);
+    } catch {
       const errorMessage = "Wystąpił błąd podczas logowania";
       setGeneralError(errorMessage);
       toast.error(errorMessage);
