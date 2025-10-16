@@ -1,6 +1,6 @@
 # CashBuddy
 
-A responsive web application designed for easy and quick tracking of daily expenses in Polish złoty (PLN). CashBuddy focuses on intuitive interface and clear statistics to help users better manage their household budget.
+A responsive web application designed for easy and quick tracking of daily expenses in Polish złoty (PLN). CashBuddy focuses on an intuitive interface and clear statistics to help users better manage their household budget.
 
 ## Table of Contents
 
