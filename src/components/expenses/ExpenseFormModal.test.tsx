@@ -348,7 +348,9 @@ describe("ExpenseFormModal", () => {
 
       render(<ExpenseFormModal isOpen={true} onClose={mockOnClose} onSave={mockOnSave} />);
 
-      await user.type(screen.getByLabelText(/nazwa/i), longName);
+      // Use paste for long text - faster and more realistic
+      await user.click(screen.getByLabelText(/nazwa/i));
+      await user.paste(longName);
       await user.type(screen.getByLabelText(/kwota/i), "100");
 
       await user.click(screen.getByRole("button", { name: /zapisz/i }));
@@ -371,7 +373,9 @@ describe("ExpenseFormModal", () => {
 
       await user.type(screen.getByLabelText(/nazwa/i), "Test");
       await user.type(screen.getByLabelText(/kwota/i), "100");
-      await user.type(screen.getByLabelText(/opis/i), longDescription);
+      // Use paste for long text - faster and more realistic
+      await user.click(screen.getByLabelText(/opis/i));
+      await user.paste(longDescription);
 
       await user.click(screen.getByRole("button", { name: /zapisz/i }));
 
