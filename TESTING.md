@@ -33,6 +33,18 @@ npm run test -- --watch -t "Button"
 
 ### E2E Tests
 
+Before running E2E tests, create a `.env.test` file with the following variables:
+
+```env
+# Supabase Configuration
+SUPABASE_URL=your-supabase-url
+SUPABASE_KEY=your-supabase-anon-key
+
+# Test User Credentials
+E2E_USERNAME=test@example.com
+E2E_PASSWORD=your-test-password
+```
+
 ```bash
 # Run all e2e tests
 npm run test:e2e
@@ -50,6 +62,8 @@ npm run test:e2e:debug
 npx playwright test auth.spec.ts
 ```
 
+**Database Cleanup**: After all tests complete, the global teardown script automatically deletes all expenses created by the test user, ensuring a clean state for the next test run.
+
 ## Test Structure
 
 ```
@@ -66,9 +80,11 @@ src/
     └── **/*.test.ts      # Service/utility tests
 
 e2e/
-├── pages/                # Page Object Models
+├── page-objects/         # Page Object Models
 │   ├── LoginPage.ts
-│   └── ExpensesPage.ts
+│   ├── ExpensesPage.ts
+│   └── ExpensesTable.ts
+├── global-teardown.ts    # Cleanup script (runs after all tests)
 └── *.spec.ts            # E2E test files
 ```
 
@@ -126,6 +142,37 @@ describe('ExpenseService', () => {
     const result = await expenseService.getExpenses()
     expect(result.data).toEqual(mockExpenses)
   })
+})
+```
+
+## E2E Test Database Cleanup
+
+The project includes an automatic database cleanup mechanism that runs after all E2E tests complete.
+
+### How It Works
+
+1. **Global Teardown**: After all Playwright tests finish, the `e2e/global-teardown.ts` script automatically executes
+2. **Test User Authentication**: The script signs in as the test user (using `E2E_USERNAME` and `E2E_PASSWORD`)
+3. **Data Deletion**: All expenses created by the test user are deleted from the Supabase database
+4. **Clean State**: This ensures each test run starts with a clean slate
+
+### Manual Cleanup
+
+If you need to manually clean up test data:
+
+```bash
+# The teardown runs automatically after tests, but you can also run it manually
+npx tsx e2e/global-teardown.ts
+```
+
+### Configuration
+
+The teardown is configured in `playwright.config.ts`:
+
+```typescript
+export default defineConfig({
+  globalTeardown: './e2e/global-teardown.ts',
+  // ... other config
 })
 ```
 
@@ -237,6 +284,8 @@ The CI pipeline:
 - Use data-testid attributes for reliable element selection
 - Take screenshots for visual regression testing
 - Keep tests independent and idempotent
+- Always use the configured test user (`E2E_USERNAME`) for consistency
+- Don't worry about manual cleanup - the global teardown handles it automatically
 
 ### General
 - Run tests in watch mode during development

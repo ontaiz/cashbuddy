@@ -12,6 +12,9 @@ export default defineConfig({
   /* Run tests in files in parallel */
   fullyParallel: false,
   
+  /* Global teardown - cleanup database after all tests */
+  globalTeardown: './e2e/global-teardown.ts',
+  
   /* Global timeout for each test */
   timeout: 120000,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
