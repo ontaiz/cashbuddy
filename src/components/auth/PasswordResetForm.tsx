@@ -129,7 +129,7 @@ const PasswordResetForm: FC = () => {
   return (
     <Card className="w-full max-w-md">
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold">Resetuj hasło</CardTitle>
+        <CardTitle className="text-2xl font-bold" data-testid="password-reset-title">Resetuj hasło</CardTitle>
         <CardDescription>Wprowadź swój adres e-mail, a wyślemy Ci link do resetowania hasła</CardDescription>
       </CardHeader>
 

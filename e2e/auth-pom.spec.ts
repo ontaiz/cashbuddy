@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { LoginPage } from './pages/LoginPage'
+import { LoginPage } from './page-objects'
 
 test.describe('Authentication with Page Object Model', () => {
   let loginPage: LoginPage
@@ -10,7 +10,7 @@ test.describe('Authentication with Page Object Model', () => {
   })
 
   test('should login with valid credentials', async ({ page }) => {
-    await loginPage.login('test@example.com', 'password123')
+    await loginPage.loginWithTestCredentials()
     
     // Check if redirected to dashboard
     await expect(page).toHaveURL('/dashboard')

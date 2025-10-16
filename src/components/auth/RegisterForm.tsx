@@ -148,7 +148,7 @@ const RegisterForm: FC = () => {
   return (
     <Card className="w-full max-w-md">
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold">Utwórz konto</CardTitle>
+        <CardTitle className="text-2xl font-bold" data-testid="register-title">Utwórz konto</CardTitle>
         <CardDescription>Wprowadź swoje dane, aby założyć nowe konto</CardDescription>
       </CardHeader>
 
@@ -169,6 +169,7 @@ const RegisterForm: FC = () => {
               aria-describedby={errors.email ? "email-error" : undefined}
               autoComplete="email"
               autoFocus
+              data-testid="register-email-input"
             />
             {errors.email && (
               <p id="email-error" className="text-sm text-destructive">
@@ -191,6 +192,7 @@ const RegisterForm: FC = () => {
               aria-invalid={!!errors.password}
               aria-describedby={errors.password ? "password-error" : undefined}
               autoComplete="new-password"
+              data-testid="register-password-input"
             />
             {errors.password && (
               <p id="password-error" className="text-sm text-destructive">
@@ -218,6 +220,7 @@ const RegisterForm: FC = () => {
               aria-invalid={!!errors.confirmPassword}
               aria-describedby={errors.confirmPassword ? "confirmPassword-error" : undefined}
               autoComplete="new-password"
+              data-testid="register-confirm-password-input"
             />
             {errors.confirmPassword && (
               <p id="confirmPassword-error" className="text-sm text-destructive">
@@ -228,7 +231,7 @@ const RegisterForm: FC = () => {
         </CardContent>
 
         <CardFooter className="flex flex-col space-y-4">
-          <Button type="submit" disabled={!isFormValid || isSubmitting} className="w-full" size="lg">
+          <Button type="submit" disabled={!isFormValid || isSubmitting} className="w-full" size="lg" data-testid="register-submit-button">
             {isSubmitting ? (
               <>
                 <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-background border-t-transparent" />

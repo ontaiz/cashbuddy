@@ -28,6 +28,7 @@ const LoginForm: FC = () => {
 
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [generalError, setGeneralError] = useState<string>("");
 
   /**
    * Validates form data
@@ -62,6 +63,7 @@ const LoginForm: FC = () => {
     }
 
     setIsSubmitting(true);
+    setGeneralError("");
 
     try {
       const response = await fetch("/api/auth/login", {
@@ -78,7 +80,9 @@ const LoginForm: FC = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        toast.error(data.error || "Błąd logowania");
+        const errorMessage = data.error || "Błąd logowania";
+        setGeneralError(errorMessage);
+        toast.error(errorMessage);
         return;
       }
 
@@ -88,7 +92,9 @@ const LoginForm: FC = () => {
       window.location.href = "/dashboard";
     } catch (error) {
       console.error("Login failed:", error);
-      toast.error("Wystąpił błąd podczas logowania");
+      const errorMessage = "Wystąpił błąd podczas logowania";
+      setGeneralError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
@@ -103,6 +109,10 @@ const LoginForm: FC = () => {
     if (errors[field as keyof FormErrors]) {
       setErrors((prev) => ({ ...prev, [field]: undefined }));
     }
+    // Clear general error when user starts typing
+    if (generalError) {
+      setGeneralError("");
+    }
   };
 
   const isFormValid = formData.email.trim() && formData.password;
@@ -110,12 +120,19 @@ const LoginForm: FC = () => {
   return (
     <Card className="w-full max-w-md">
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold">Zaloguj się</CardTitle>
+        <CardTitle className="text-2xl font-bold" data-testid="login-title">Zaloguj się</CardTitle>
         <CardDescription>Wprowadź swoje dane, aby uzyskać dostęp do swojego konta</CardDescription>
       </CardHeader>
 
       <form onSubmit={handleSubmit}>
         <CardContent className="space-y-4">
+          {/* General error message */}
+          {generalError && (
+            <div className="p-3 rounded-md bg-destructive/10 border border-destructive" data-testid="error-message">
+              <p className="text-sm text-destructive">{generalError}</p>
+            </div>
+          )}
+
           {/* Email field */}
           <div className="space-y-2">
             <Label htmlFor="email">
@@ -131,6 +148,7 @@ const LoginForm: FC = () => {
               aria-describedby={errors.email ? "email-error" : undefined}
               autoComplete="email"
               autoFocus
+              data-testid="login-email-input"
             />
             {errors.email && (
               <p id="email-error" className="text-sm text-destructive">
@@ -153,6 +171,7 @@ const LoginForm: FC = () => {
               aria-invalid={!!errors.password}
               aria-describedby={errors.password ? "password-error" : undefined}
               autoComplete="current-password"
+              data-testid="login-password-input"
             />
             {errors.password && (
               <p id="password-error" className="text-sm text-destructive">
@@ -170,7 +189,7 @@ const LoginForm: FC = () => {
         </CardContent>
 
         <CardFooter className="flex flex-col space-y-4">
-          <Button type="submit" disabled={!isFormValid || isSubmitting} className="w-full" size="lg">
+          <Button type="submit" disabled={!isFormValid || isSubmitting} className="w-full" size="lg" data-testid="login-submit-button">
             {isSubmitting ? (
               <>
                 <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-background border-t-transparent" />

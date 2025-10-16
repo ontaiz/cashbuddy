@@ -1,4 +1,4 @@
-import { Page, Locator } from '@playwright/test'
+import { type Page, type Locator } from '@playwright/test'
 
 export class LoginPage {
   readonly page: Page
@@ -11,11 +11,11 @@ export class LoginPage {
 
   constructor(page: Page) {
     this.page = page
-    this.emailInput = page.getByLabel(/email/i)
-    this.passwordInput = page.getByLabel(/password/i)
-    this.signInButton = page.getByRole('button', { name: /sign in/i })
-    this.signUpLink = page.getByRole('link', { name: /sign up/i })
-    this.forgotPasswordLink = page.getByRole('link', { name: /forgot password/i })
+    this.emailInput = page.getByTestId('login-email-input')
+    this.passwordInput = page.getByTestId('login-password-input')
+    this.signInButton = page.getByTestId('login-submit-button')
+    this.signUpLink = page.getByRole('link', { name: /zarejestruj/i })
+    this.forgotPasswordLink = page.getByRole('link', { name: /zapomniał/i })
     this.errorMessage = page.locator('[data-testid="error-message"]')
   }
 

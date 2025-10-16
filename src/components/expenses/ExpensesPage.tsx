@@ -103,7 +103,7 @@ const ExpensesPage: FC = () => {
           <h1 className="text-3xl font-bold tracking-tight">Wydatki</h1>
           <p className="mt-1 text-sm text-muted-foreground">Zarządzaj swoimi codziennymi wydatkami</p>
         </div>
-        <Button onClick={handleAddClick} size="lg" className="sm:w-auto">
+        <Button onClick={handleAddClick} size="lg" className="sm:w-auto" data-testid="add-expense-button">
           <Plus className="mr-2 h-4 w-4" />
           Dodaj wydatek
         </Button>
@@ -142,7 +142,7 @@ const ExpensesPage: FC = () => {
           <p className="mt-2 max-w-sm text-sm text-muted-foreground">
             Rozpocznij śledzenie swoich wydatków, dodając pierwszy wpis.
           </p>
-          <Button onClick={handleAddClick} className="mt-6" size="lg">
+          <Button onClick={handleAddClick} className="mt-6" size="lg" data-testid="add-first-expense-button">
             <Plus className="mr-2 h-4 w-4" />
             Dodaj pierwszy wydatek
           </Button>
@@ -157,6 +157,7 @@ const ExpensesPage: FC = () => {
             onEdit={handleEditClick}
             onDelete={handleDeleteClick}
             onSort={handleSort}
+            data-testid="expenses-table"
           />
 
           {/* Pagination */}

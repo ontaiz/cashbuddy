@@ -212,7 +212,7 @@ const ExpenseFormModal: FC<ExpenseFormModalProps> = ({ isOpen, onClose, onSave, 
   const isFormValid = formData.name.trim() && formData.amount.trim() && formData.date;
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={onClose} data-testid="expense-form-modal">
       <DialogContent 
         className="sm:max-w-[500px]"
         onInteractOutside={(e) => {
@@ -246,6 +246,7 @@ const ExpenseFormModal: FC<ExpenseFormModalProps> = ({ isOpen, onClose, onSave, 
                 aria-invalid={!!errors.name}
                 aria-describedby={errors.name ? "name-error" : undefined}
                 autoFocus
+                data-testid="expense-name-input"
               />
               {errors.name && (
                 <p id="name-error" className="text-sm text-destructive">
@@ -269,6 +270,7 @@ const ExpenseFormModal: FC<ExpenseFormModalProps> = ({ isOpen, onClose, onSave, 
                 placeholder="0.00"
                 aria-invalid={!!errors.amount}
                 aria-describedby={errors.amount ? "amount-error" : undefined}
+                data-testid="expense-amount-input"
               />
               {errors.amount && (
                 <p id="amount-error" className="text-sm text-destructive">
@@ -293,6 +295,7 @@ const ExpenseFormModal: FC<ExpenseFormModalProps> = ({ isOpen, onClose, onSave, 
                     )}
                     aria-invalid={!!errors.date}
                     aria-describedby={errors.date ? "date-error" : undefined}
+                    data-testid="expense-date-picker"
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
                     {formData.date ? formatDate(formData.date) : "Wybierz datę"}
@@ -323,6 +326,7 @@ const ExpenseFormModal: FC<ExpenseFormModalProps> = ({ isOpen, onClose, onSave, 
                 onChange={(e) => handleChange("description", e.target.value)}
                 placeholder="Dodatkowe informacje o wydatku..."
                 rows={3}
+                data-testid="expense-description-input"
               />
             </div>
           </div>
@@ -334,10 +338,11 @@ const ExpenseFormModal: FC<ExpenseFormModalProps> = ({ isOpen, onClose, onSave, 
               onClick={onClose}
               disabled={isSubmitting}
               className="w-full sm:w-auto"
+              data-testid="expense-form-cancel-button"
             >
               Anuluj
             </Button>
-            <Button type="submit" disabled={!isFormValid || isSubmitting} className="w-full sm:w-auto">
+            <Button type="submit" disabled={!isFormValid || isSubmitting} className="w-full sm:w-auto" data-testid="expense-form-save-button">
               {isSubmitting ? (
                 <>
                   <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-background border-t-transparent" />

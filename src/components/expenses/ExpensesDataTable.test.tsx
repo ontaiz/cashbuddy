@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { vi, describe, it, expect } from "vitest";
+import { vi, describe, it, expect, beforeEach } from "vitest";
 import { faker } from "@faker-js/faker";
 import ExpensesDataTable from "./ExpensesDataTable";
 import type { ExpenseDto } from "@/types";

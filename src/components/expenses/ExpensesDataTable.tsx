@@ -10,13 +10,14 @@ interface ExpensesDataTableProps {
   onEdit: (expense: ExpenseDto) => void;
   onDelete: (expenseId: string) => void;
   onSort: (sortBy: "date" | "amount") => void;
+  'data-testid'?: string;
 }
 
 /**
  * Component displaying expenses in table format.
  * Table columns are interactive and allow sorting.
  */
-const ExpensesDataTable: FC<ExpensesDataTableProps> = ({ expenses, onEdit, onDelete, onSort }) => {
+const ExpensesDataTable: FC<ExpensesDataTableProps> = ({ expenses, onEdit, onDelete, onSort, 'data-testid': testId }) => {
   /**
    * Formats amount to PLN currency format
    */
@@ -42,7 +43,7 @@ const ExpensesDataTable: FC<ExpensesDataTableProps> = ({ expenses, onEdit, onDel
   return (
     <>
       {/* Desktop Table View */}
-      <div className="hidden rounded-md border md:block">
+      <div className="hidden rounded-md border md:block" data-testid={`${testId}-desktop`}>
         <Table>
           <TableHeader>
             <TableRow>
@@ -73,7 +74,7 @@ const ExpensesDataTable: FC<ExpensesDataTableProps> = ({ expenses, onEdit, onDel
           </TableHeader>
           <TableBody>
             {expenses.map((expense) => (
-              <TableRow key={expense.id}>
+              <TableRow key={expense.id} data-testid={`expense-row-${expense.id}`}>
                 <TableCell className="font-medium">{expense.name}</TableCell>
                 <TableCell className="font-semibold">{formatAmount(expense.amount)}</TableCell>
                 <TableCell>{formatDate(expense.date)}</TableCell>
@@ -103,9 +104,9 @@ const ExpensesDataTable: FC<ExpensesDataTableProps> = ({ expenses, onEdit, onDel
       </div>
 
       {/* Mobile Card View */}
-      <div className="grid gap-4 md:hidden">
+      <div className="grid gap-4 md:hidden" data-testid={`${testId}-mobile`}>
         {expenses.map((expense) => (
-          <Card key={expense.id}>
+          <Card key={expense.id} data-testid={`expense-card-${expense.id}`}>
             <CardHeader className="pb-3">
               <div className="flex items-start justify-between gap-2">
                 <div className="flex-1">
