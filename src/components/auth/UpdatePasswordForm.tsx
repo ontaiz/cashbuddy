@@ -40,15 +40,15 @@ const UpdatePasswordForm: FC = () => {
   useEffect(() => {
     const checkSession = async () => {
       const supabase = createSupabaseBrowserClient();
-      
+
       // Check if there's a code in the URL (from email link)
       const urlParams = new URLSearchParams(window.location.search);
-      const code = urlParams.get('code');
-      
+      const code = urlParams.get("code");
+
       if (code) {
         // Exchange code for session
         const { error } = await supabase.auth.exchangeCodeForSession(code);
-        
+
         if (error) {
           toast.error("Link resetowania hasła wygasł lub jest nieprawidłowy");
           setTimeout(() => {
@@ -58,10 +58,12 @@ const UpdatePasswordForm: FC = () => {
           return;
         }
       }
-      
+
       // Now check if we have a valid session
-      const { data: { session } } = await supabase.auth.getSession();
-      
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
       if (session) {
         setIsValidSession(true);
       } else {
@@ -70,7 +72,7 @@ const UpdatePasswordForm: FC = () => {
           window.location.href = "/password-reset";
         }, 2000);
       }
-      
+
       setIsCheckingSession(false);
     };
 
@@ -225,7 +227,6 @@ const UpdatePasswordForm: FC = () => {
               aria-invalid={!!errors.password}
               aria-describedby={errors.password ? "password-error" : undefined}
               autoComplete="new-password"
-              autoFocus
             />
             {errors.password && (
               <p id="password-error" className="text-sm text-destructive">

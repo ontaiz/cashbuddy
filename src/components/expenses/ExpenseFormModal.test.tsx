@@ -28,25 +28,13 @@ describe("ExpenseFormModal", () => {
 
   describe("Rendering", () => {
     it("should not render when isOpen is false", () => {
-      render(
-        <ExpenseFormModal
-          isOpen={false}
-          onClose={mockOnClose}
-          onSave={mockOnSave}
-        />
-      );
+      render(<ExpenseFormModal isOpen={false} onClose={mockOnClose} onSave={mockOnSave} />);
 
       expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     });
 
     it("should render add mode when no initialData provided", () => {
-      render(
-        <ExpenseFormModal
-          isOpen={true}
-          onClose={mockOnClose}
-          onSave={mockOnSave}
-        />
-      );
+      render(<ExpenseFormModal isOpen={true} onClose={mockOnClose} onSave={mockOnSave} />);
 
       expect(screen.getByRole("dialog")).toBeInTheDocument();
       expect(screen.getByText("Dodaj wydatek")).toBeInTheDocument();
@@ -57,34 +45,21 @@ describe("ExpenseFormModal", () => {
 
     it("should render edit mode when initialData provided", () => {
       const expense = generateMockExpense();
-      
-      render(
-        <ExpenseFormModal
-          isOpen={true}
-          onClose={mockOnClose}
-          onSave={mockOnSave}
-          initialData={expense}
-        />
-      );
+
+      render(<ExpenseFormModal isOpen={true} onClose={mockOnClose} onSave={mockOnSave} initialData={expense} />);
 
       expect(screen.getByText("Edytuj wydatek")).toBeInTheDocument();
       expect(screen.getByText("Wprowadź zmiany i kliknij zapisz.")).toBeInTheDocument();
     });
 
     it("should render all form fields", () => {
-      render(
-        <ExpenseFormModal
-          isOpen={true}
-          onClose={mockOnClose}
-          onSave={mockOnSave}
-        />
-      );
+      render(<ExpenseFormModal isOpen={true} onClose={mockOnClose} onSave={mockOnSave} />);
 
       // Check required fields
       expect(screen.getByLabelText(/nazwa/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/kwota/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/data/i)).toBeInTheDocument();
-      
+
       // Check optional field
       expect(screen.getByLabelText(/opis/i)).toBeInTheDocument();
 
@@ -100,14 +75,7 @@ describe("ExpenseFormModal", () => {
         description: "Test description",
       });
 
-      render(
-        <ExpenseFormModal
-          isOpen={true}
-          onClose={mockOnClose}
-          onSave={mockOnSave}
-          initialData={expense}
-        />
-      );
+      render(<ExpenseFormModal isOpen={true} onClose={mockOnClose} onSave={mockOnSave} initialData={expense} />);
 
       expect(screen.getByDisplayValue("Test Expense")).toBeInTheDocument();
       expect(screen.getByDisplayValue("123.45")).toBeInTheDocument();
@@ -121,14 +89,7 @@ describe("ExpenseFormModal", () => {
         description: null,
       });
 
-      render(
-        <ExpenseFormModal
-          isOpen={true}
-          onClose={mockOnClose}
-          onSave={mockOnSave}
-          initialData={expense}
-        />
-      );
+      render(<ExpenseFormModal isOpen={true} onClose={mockOnClose} onSave={mockOnSave} initialData={expense} />);
 
       const descriptionField = screen.getByLabelText(/opis/i);
       expect(descriptionField).toHaveValue("");
@@ -138,14 +99,8 @@ describe("ExpenseFormModal", () => {
   describe("User Interactions", () => {
     it("should handle form submission with valid data in add mode", async () => {
       const user = userEvent.setup();
-      
-      render(
-        <ExpenseFormModal
-          isOpen={true}
-          onClose={mockOnClose}
-          onSave={mockOnSave}
-        />
-      );
+
+      render(<ExpenseFormModal isOpen={true} onClose={mockOnClose} onSave={mockOnSave} />);
 
       // Fill out the form
       await user.type(screen.getByLabelText(/nazwa/i), "Test Expense");
@@ -172,15 +127,8 @@ describe("ExpenseFormModal", () => {
         amount: 100,
         description: "Original description",
       });
-      
-      render(
-        <ExpenseFormModal
-          isOpen={true}
-          onClose={mockOnClose}
-          onSave={mockOnSave}
-          initialData={expense}
-        />
-      );
+
+      render(<ExpenseFormModal isOpen={true} onClose={mockOnClose} onSave={mockOnSave} initialData={expense} />);
 
       // Modify the form
       const nameField = screen.getByDisplayValue("Original Name");
@@ -197,7 +145,7 @@ describe("ExpenseFormModal", () => {
       await waitFor(() => {
         expect(mockOnSave).toHaveBeenCalledWith({
           name: "Updated Name",
-          amount: 200.50,
+          amount: 200.5,
           date: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/),
           description: "Original description",
         });
@@ -206,14 +154,8 @@ describe("ExpenseFormModal", () => {
 
     it("should handle empty description correctly", async () => {
       const user = userEvent.setup();
-      
-      render(
-        <ExpenseFormModal
-          isOpen={true}
-          onClose={mockOnClose}
-          onSave={mockOnSave}
-        />
-      );
+
+      render(<ExpenseFormModal isOpen={true} onClose={mockOnClose} onSave={mockOnSave} />);
 
       // Fill required fields only
       await user.type(screen.getByLabelText(/nazwa/i), "Test Expense");
@@ -234,14 +176,8 @@ describe("ExpenseFormModal", () => {
 
     it("should trim whitespace from input fields", async () => {
       const user = userEvent.setup();
-      
-      render(
-        <ExpenseFormModal
-          isOpen={true}
-          onClose={mockOnClose}
-          onSave={mockOnSave}
-        />
-      );
+
+      render(<ExpenseFormModal isOpen={true} onClose={mockOnClose} onSave={mockOnSave} />);
 
       // Add whitespace around values
       await user.type(screen.getByLabelText(/nazwa/i), "  Test Expense  ");
@@ -262,14 +198,8 @@ describe("ExpenseFormModal", () => {
 
     it("should call onClose when cancel button is clicked", async () => {
       const user = userEvent.setup();
-      
-      render(
-        <ExpenseFormModal
-          isOpen={true}
-          onClose={mockOnClose}
-          onSave={mockOnSave}
-        />
-      );
+
+      render(<ExpenseFormModal isOpen={true} onClose={mockOnClose} onSave={mockOnSave} />);
 
       await user.click(screen.getByRole("button", { name: /anuluj/i }));
 
@@ -280,13 +210,7 @@ describe("ExpenseFormModal", () => {
 
   describe("Date Handling", () => {
     it("should display current date as default in add mode", () => {
-      render(
-        <ExpenseFormModal
-          isOpen={true}
-          onClose={mockOnClose}
-          onSave={mockOnSave}
-        />
-      );
+      render(<ExpenseFormModal isOpen={true} onClose={mockOnClose} onSave={mockOnSave} />);
 
       // Should show today's date formatted in Polish
       const today = new Date();
@@ -304,43 +228,29 @@ describe("ExpenseFormModal", () => {
         date: "2024-03-15T12:00:00.000Z",
       });
 
-      render(
-        <ExpenseFormModal
-          isOpen={true}
-          onClose={mockOnClose}
-          onSave={mockOnSave}
-          initialData={expense}
-        />
-      );
+      render(<ExpenseFormModal isOpen={true} onClose={mockOnClose} onSave={mockOnSave} initialData={expense} />);
 
       expect(screen.getByText("15 marca 2024")).toBeInTheDocument();
     });
-
   });
 
   describe("Loading States", () => {
     it("should show loading state during form submission", async () => {
       const user = userEvent.setup();
-      
+
       // Make onSave return a pending promise
-      let resolvePromise: () => void;
+      let resolvePromise: (() => void) | undefined;
       const pendingPromise = new Promise<void>((resolve) => {
         resolvePromise = resolve;
       });
       mockOnSave.mockReturnValue(pendingPromise);
 
-      render(
-        <ExpenseFormModal
-          isOpen={true}
-          onClose={mockOnClose}
-          onSave={mockOnSave}
-        />
-      );
+      render(<ExpenseFormModal isOpen={true} onClose={mockOnClose} onSave={mockOnSave} />);
 
       // Fill and submit form
       await user.type(screen.getByLabelText(/nazwa/i), "Test");
       await user.type(screen.getByLabelText(/kwota/i), "100");
-      
+
       const submitButton = screen.getByRole("button", { name: /zapisz/i });
       await user.click(submitButton);
 
@@ -352,8 +262,8 @@ describe("ExpenseFormModal", () => {
       });
 
       // Resolve the promise
-      resolvePromise!();
-      
+      if (resolvePromise) resolvePromise();
+
       await waitFor(() => {
         expect(screen.queryByText("Zapisywanie...")).not.toBeInTheDocument();
       });
@@ -361,23 +271,19 @@ describe("ExpenseFormModal", () => {
 
     it("should handle submission errors gracefully", async () => {
       const user = userEvent.setup();
-      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-      
+      const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {
+        // Intentionally empty to suppress error logs during testing
+      });
+
       // Make onSave reject
       mockOnSave.mockRejectedValue(new Error("Save failed"));
 
-      render(
-        <ExpenseFormModal
-          isOpen={true}
-          onClose={mockOnClose}
-          onSave={mockOnSave}
-        />
-      );
+      render(<ExpenseFormModal isOpen={true} onClose={mockOnClose} onSave={mockOnSave} />);
 
       // Fill and submit form
       await user.type(screen.getByLabelText(/nazwa/i), "Test");
       await user.type(screen.getByLabelText(/kwota/i), "100");
-      
+
       await user.click(screen.getByRole("button", { name: /zapisz/i }));
 
       await waitFor(() => {
@@ -386,21 +292,14 @@ describe("ExpenseFormModal", () => {
 
       // Form should be enabled again
       expect(screen.getByRole("button", { name: /zapisz/i })).toBeEnabled();
-      
+
       consoleErrorSpy.mockRestore();
     });
   });
 
-
   describe("Accessibility", () => {
     it("should have proper ARIA attributes", () => {
-      render(
-        <ExpenseFormModal
-          isOpen={true}
-          onClose={mockOnClose}
-          onSave={mockOnSave}
-        />
-      );
+      render(<ExpenseFormModal isOpen={true} onClose={mockOnClose} onSave={mockOnSave} />);
 
       // Dialog should have proper role
       expect(screen.getByRole("dialog")).toBeInTheDocument();
@@ -425,14 +324,8 @@ describe("ExpenseFormModal", () => {
   describe("Edge Cases", () => {
     it("should handle very large amounts", async () => {
       const user = userEvent.setup();
-      
-      render(
-        <ExpenseFormModal
-          isOpen={true}
-          onClose={mockOnClose}
-          onSave={mockOnSave}
-        />
-      );
+
+      render(<ExpenseFormModal isOpen={true} onClose={mockOnClose} onSave={mockOnSave} />);
 
       await user.type(screen.getByLabelText(/nazwa/i), "Large Expense");
       await user.type(screen.getByLabelText(/kwota/i), "999999999.99");
@@ -449,18 +342,11 @@ describe("ExpenseFormModal", () => {
       });
     });
 
-
     it("should handle very long expense names", async () => {
       const user = userEvent.setup();
       const longName = faker.lorem.words(50); // Very long name
-      
-      render(
-        <ExpenseFormModal
-          isOpen={true}
-          onClose={mockOnClose}
-          onSave={mockOnSave}
-        />
-      );
+
+      render(<ExpenseFormModal isOpen={true} onClose={mockOnClose} onSave={mockOnSave} />);
 
       await user.type(screen.getByLabelText(/nazwa/i), longName);
       await user.type(screen.getByLabelText(/kwota/i), "100");
@@ -480,14 +366,8 @@ describe("ExpenseFormModal", () => {
     it("should handle very long descriptions", async () => {
       const user = userEvent.setup();
       const longDescription = faker.lorem.sentences(20); // Very long description
-      
-      render(
-        <ExpenseFormModal
-          isOpen={true}
-          onClose={mockOnClose}
-          onSave={mockOnSave}
-        />
-      );
+
+      render(<ExpenseFormModal isOpen={true} onClose={mockOnClose} onSave={mockOnSave} />);
 
       await user.type(screen.getByLabelText(/nazwa/i), "Test");
       await user.type(screen.getByLabelText(/kwota/i), "100");

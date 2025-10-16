@@ -116,7 +116,8 @@ export async function getPaginatedExpenses(
   const totalPages = Math.ceil(totalItems / limit);
 
   // Transform data to ExpenseDto (omit user_id)
-  const expenses: ExpenseDto[] = data.map(({ user_id, ...expense }) => expense);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const expenses: ExpenseDto[] = data.map(({ user_id: _, ...expense }) => expense);
 
   // Return paginated response
   return {

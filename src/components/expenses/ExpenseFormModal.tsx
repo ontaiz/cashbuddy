@@ -213,7 +213,7 @@ const ExpenseFormModal: FC<ExpenseFormModalProps> = ({ isOpen, onClose, onSave, 
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose} data-testid="expense-form-modal">
-      <DialogContent 
+      <DialogContent
         className="sm:max-w-[500px]"
         onInteractOutside={(e) => {
           // Don't close dialog when clicking on calendar popover
@@ -241,11 +241,10 @@ const ExpenseFormModal: FC<ExpenseFormModalProps> = ({ isOpen, onClose, onSave, 
               <Input
                 id="name"
                 value={formData.name}
-                onChange={(e) => handleChange('name', e.target.value)}
+                onChange={(e) => handleChange("name", e.target.value)}
                 placeholder="np. Zakupy spożywcze"
                 aria-invalid={!!errors.name}
                 aria-describedby={errors.name ? "name-error" : undefined}
-                autoFocus
                 data-testid="expense-name-input"
               />
               {errors.name && (
@@ -289,10 +288,7 @@ const ExpenseFormModal: FC<ExpenseFormModalProps> = ({ isOpen, onClose, onSave, 
                   <Button
                     id="date"
                     variant="outline"
-                    className={cn(
-                      'justify-start text-left font-normal',
-                      !formData.date && 'text-muted-foreground'
-                    )}
+                    className={cn("justify-start text-left font-normal", !formData.date && "text-muted-foreground")}
                     aria-invalid={!!errors.date}
                     aria-describedby={errors.date ? "date-error" : undefined}
                     data-testid="expense-date-picker"
@@ -342,7 +338,12 @@ const ExpenseFormModal: FC<ExpenseFormModalProps> = ({ isOpen, onClose, onSave, 
             >
               Anuluj
             </Button>
-            <Button type="submit" disabled={!isFormValid || isSubmitting} className="w-full sm:w-auto" data-testid="expense-form-save-button">
+            <Button
+              type="submit"
+              disabled={!isFormValid || isSubmitting}
+              className="w-full sm:w-auto"
+              data-testid="expense-form-save-button"
+            >
               {isSubmitting ? (
                 <>
                   <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-background border-t-transparent" />

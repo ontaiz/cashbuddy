@@ -1,59 +1,59 @@
-import { describe, it, expect, vi } from 'vitest'
-import { render, screen } from '@/test/utils'
-import userEvent from '@testing-library/user-event'
-import { Button } from './button'
+import { describe, it, expect, vi } from "vitest";
+import { render, screen } from "@/test/utils";
+import userEvent from "@testing-library/user-event";
+import { Button } from "./button";
 
-describe('Button', () => {
-  it('renders with default props', () => {
-    render(<Button>Click me</Button>)
-    
-    const button = screen.getByRole('button', { name: /click me/i })
-    expect(button).toBeInTheDocument()
-    expect(button).toHaveClass('bg-primary')
-  })
+describe("Button", () => {
+  it("renders with default props", () => {
+    render(<Button>Click me</Button>);
 
-  it('renders with different variants', () => {
-    render(<Button variant="destructive">Delete</Button>)
-    
-    const button = screen.getByRole('button', { name: /delete/i })
-    expect(button).toHaveClass('bg-destructive')
-  })
+    const button = screen.getByRole("button", { name: /click me/i });
+    expect(button).toBeInTheDocument();
+    expect(button).toHaveClass("bg-primary");
+  });
 
-  it('renders with different sizes', () => {
-    render(<Button size="sm">Small</Button>)
-    
-    const button = screen.getByRole('button', { name: /small/i })
-    expect(button).toHaveClass('h-8')
-  })
+  it("renders with different variants", () => {
+    render(<Button variant="destructive">Delete</Button>);
 
-  it('handles click events', async () => {
-    const user = userEvent.setup()
-    const handleClick = vi.fn()
-    
-    render(<Button onClick={handleClick}>Click me</Button>)
-    
-    const button = screen.getByRole('button', { name: /click me/i })
-    await user.click(button)
-    
-    expect(handleClick).toHaveBeenCalledTimes(1)
-  })
+    const button = screen.getByRole("button", { name: /delete/i });
+    expect(button).toHaveClass("bg-destructive");
+  });
 
-  it('is disabled when disabled prop is true', () => {
-    render(<Button disabled>Disabled</Button>)
-    
-    const button = screen.getByRole('button', { name: /disabled/i })
-    expect(button).toBeDisabled()
-  })
+  it("renders with different sizes", () => {
+    render(<Button size="sm">Small</Button>);
 
-  it('renders as child component when asChild is true', () => {
+    const button = screen.getByRole("button", { name: /small/i });
+    expect(button).toHaveClass("h-8");
+  });
+
+  it("handles click events", async () => {
+    const user = userEvent.setup();
+    const handleClick = vi.fn();
+
+    render(<Button onClick={handleClick}>Click me</Button>);
+
+    const button = screen.getByRole("button", { name: /click me/i });
+    await user.click(button);
+
+    expect(handleClick).toHaveBeenCalledTimes(1);
+  });
+
+  it("is disabled when disabled prop is true", () => {
+    render(<Button disabled>Disabled</Button>);
+
+    const button = screen.getByRole("button", { name: /disabled/i });
+    expect(button).toBeDisabled();
+  });
+
+  it("renders as child component when asChild is true", () => {
     render(
       <Button asChild>
         <a href="/test">Link</a>
       </Button>
-    )
-    
-    const link = screen.getByRole('link', { name: /link/i })
-    expect(link).toBeInTheDocument()
-    expect(link).toHaveAttribute('href', '/test')
-  })
-})
+    );
+
+    const link = screen.getByRole("link", { name: /link/i });
+    expect(link).toBeInTheDocument();
+    expect(link).toHaveAttribute("href", "/test");
+  });
+});

@@ -6,9 +6,5 @@ import type { Database } from "./database.types";
  * This is needed to handle auth tokens from URL fragments (e.g., password reset)
  */
 export function createSupabaseBrowserClient() {
-  return createBrowserClient<Database>(
-    import.meta.env.SUPABASE_URL,
-    import.meta.env.SUPABASE_KEY
-  );
+  return createBrowserClient<Database>(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_KEY);
 }
-

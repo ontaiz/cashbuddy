@@ -21,8 +21,7 @@ describe("useExpenses", () => {
     created_at: faker.date.recent().toISOString(),
   });
 
-  const generateMockExpenses = (count: number): ExpenseDto[] =>
-    Array.from({ length: count }, generateMockExpense);
+  const generateMockExpenses = (count: number): ExpenseDto[] => Array.from({ length: count }, generateMockExpense);
 
   const generateMockPaginatedResponse = (
     expenses: ExpenseDto[] = generateMockExpenses(5),
@@ -61,7 +60,7 @@ describe("useExpenses", () => {
   afterEach(() => {
     vi.resetAllMocks();
     // Restart MSW server for other tests
-    server.listen({ onUnhandledRequest: 'error' });
+    server.listen({ onUnhandledRequest: "error" });
   });
 
   describe("Initial State", () => {
@@ -114,9 +113,7 @@ describe("useExpenses", () => {
         expect(result.current.isLoading).toBe(false);
       });
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        "/api/expenses?page=1&limit=10&sort_by=date&order=desc"
-      );
+      expect(mockFetch).toHaveBeenCalledWith("/api/expenses?page=1&limit=10&sort_by=date&order=desc");
       expect(result.current.data).toEqual(mockResponse);
       expect(result.current.error).toBeNull();
     });
@@ -176,8 +173,8 @@ describe("useExpenses", () => {
 
     it("should set loading state correctly during fetch", async () => {
       const mockResponse = generateMockPaginatedResponse();
-      let resolvePromise: (value: any) => void;
-      const fetchPromise = new Promise((resolve) => {
+      let resolvePromise: ((value: Response) => void) | undefined;
+      const fetchPromise = new Promise<Response>((resolve) => {
         resolvePromise = resolve;
       });
 
@@ -190,10 +187,12 @@ describe("useExpenses", () => {
 
       // Resolve the promise
       act(() => {
-        resolvePromise!({
-          ok: true,
-          json: vi.fn().mockResolvedValue(mockResponse),
-        });
+        if (resolvePromise) {
+          resolvePromise({
+            ok: true,
+            json: vi.fn().mockResolvedValue(mockResponse),
+          } as Response);
+        }
       });
 
       await waitFor(() => {
@@ -230,7 +229,7 @@ describe("useExpenses", () => {
         expect(result.current.isLoading).toBe(false);
       });
 
-      let addedExpense: ExpenseDto;
+      let addedExpense: ExpenseDto | undefined;
       await act(async () => {
         addedExpense = await result.current.addExpense(createCommand);
       });
@@ -242,7 +241,7 @@ describe("useExpenses", () => {
         },
         body: JSON.stringify(createCommand),
       });
-      expect(addedExpense!).toEqual(newExpense);
+      expect(addedExpense).toEqual(newExpense);
       // Should have called fetch again to refresh data
       expect(mockFetch).toHaveBeenCalledTimes(3);
     });
@@ -303,7 +302,7 @@ describe("useExpenses", () => {
         expect(result.current.isLoading).toBe(false);
       });
 
-      let resultExpense: ExpenseDto;
+      let resultExpense: ExpenseDto | undefined;
       await act(async () => {
         resultExpense = await result.current.updateExpense(expenseId, updateCommand);
       });
@@ -315,7 +314,7 @@ describe("useExpenses", () => {
         },
         body: JSON.stringify(updateCommand),
       });
-      expect(resultExpense!).toEqual(updatedExpense);
+      expect(resultExpense).toEqual(updatedExpense);
     });
 
     it("should handle update expense errors", async () => {
@@ -352,9 +351,7 @@ describe("useExpenses", () => {
       const expenses = generateMockExpenses(3);
       const expenseToDelete = expenses[1];
       const mockResponse = generateMockPaginatedResponse(expenses);
-      const updatedResponse = generateMockPaginatedResponse(
-        expenses.filter((e) => e.id !== expenseToDelete.id)
-      );
+      const updatedResponse = generateMockPaginatedResponse(expenses.filter((e) => e.id !== expenseToDelete.id));
 
       mockFetch
         .mockResolvedValueOnce({
@@ -544,9 +541,7 @@ describe("useExpenses", () => {
       });
 
       expect(mockFetch).toHaveBeenCalledTimes(1);
-      expect(mockFetch).toHaveBeenCalledWith(
-        "/api/expenses?page=1&limit=10&sort_by=date&order=desc"
-      );
+      expect(mockFetch).toHaveBeenCalledWith("/api/expenses?page=1&limit=10&sort_by=date&order=desc");
     });
   });
 

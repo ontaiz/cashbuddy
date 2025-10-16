@@ -34,4 +34,3 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     return new Response(JSON.stringify({ error: "Wystąpił błąd podczas resetowania hasła" }), { status: 500 });
   }
 };
-

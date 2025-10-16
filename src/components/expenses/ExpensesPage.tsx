@@ -20,7 +20,6 @@ const ExpensesPage: FC = () => {
     data,
     filters,
     sort,
-    page,
     isLoading,
     error,
     setFilters,

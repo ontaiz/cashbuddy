@@ -94,10 +94,17 @@ function Calendar({
         ...classNames,
       }}
       components={{
-        Root: ({ className, rootRef, ...props }) => {
+        Root: ({ className, rootRef, ...props }: { className?: string; rootRef?: React.RefObject<HTMLDivElement> }) => {
           return <div data-slot="calendar" ref={rootRef} className={cn(className)} {...props} />;
         },
-        Chevron: ({ className, orientation, ...props }) => {
+        Chevron: ({
+          className,
+          orientation,
+          ...props
+        }: {
+          className?: string;
+          orientation?: "left" | "right" | "up" | "down";
+        }) => {
           if (orientation === "left") {
             return <ChevronLeftIcon className={cn("size-4", className)} {...props} />;
           }

@@ -1,7 +1,6 @@
 import { useState, type FC } from "react";
 import type { FilterState, SortState } from "./types";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -120,7 +119,7 @@ const FilterControls: FC<FilterControlsProps> = ({ filters, sort, onFilterChange
     <div className="mb-6 space-y-4 rounded-lg border bg-card p-4">
       {/* Date Range Filters */}
       <div className="space-y-3">
-        <label className="text-sm font-medium">Zakres dat</label>
+        <div className="text-sm font-medium">Zakres dat</div>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <div className="flex flex-1 items-center gap-2">
             {/* Start Date */}
@@ -186,7 +185,7 @@ const FilterControls: FC<FilterControlsProps> = ({ filters, sort, onFilterChange
 
       {/* Sort Controls */}
       <div className="space-y-3">
-        <label className="text-sm font-medium">Sortowanie</label>
+        <div className="text-sm font-medium">Sortowanie</div>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <div className="flex items-center gap-2">
             <Select value={sort.sortBy} onValueChange={handleSortByChange}>

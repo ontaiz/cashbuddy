@@ -20,8 +20,8 @@ export const onRequest = defineMiddleware(async ({ locals, cookies, url, request
   }
 
   // Check if URL contains password reset code and redirect to update-password page
-  const code = url.searchParams.get('code');
-  if (code && url.pathname === '/') {
+  const code = url.searchParams.get("code");
+  if (code && url.pathname === "/") {
     return redirect(`/update-password?code=${code}`);
   }
 
@@ -54,7 +54,7 @@ export const onRequest = defineMiddleware(async ({ locals, cookies, url, request
     // Allow access to update-password for password reset flow
     // Supabase sends tokens in URL fragment (#) which is not accessible server-side,
     // so we allow access to update-password page without auth for password reset
-    if (!AUTH_PAGES.includes(url.pathname) && url.pathname !== '/update-password') {
+    if (!AUTH_PAGES.includes(url.pathname) && url.pathname !== "/update-password") {
       return redirect("/login");
     }
   }

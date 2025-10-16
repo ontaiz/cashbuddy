@@ -3,21 +3,27 @@ import type { ExpenseDto } from "@/types";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Pencil, Trash2, ArrowUpDown, Calendar, DollarSign } from "lucide-react";
+import { Pencil, Trash2, ArrowUpDown, Calendar } from "lucide-react";
 
 interface ExpensesDataTableProps {
   expenses: ExpenseDto[];
   onEdit: (expense: ExpenseDto) => void;
   onDelete: (expenseId: string) => void;
   onSort: (sortBy: "date" | "amount") => void;
-  'data-testid'?: string;
+  "data-testid"?: string;
 }
 
 /**
  * Component displaying expenses in table format.
  * Table columns are interactive and allow sorting.
  */
-const ExpensesDataTable: FC<ExpensesDataTableProps> = ({ expenses, onEdit, onDelete, onSort, 'data-testid': testId = 'expenses-table' }) => {
+const ExpensesDataTable: FC<ExpensesDataTableProps> = ({
+  expenses,
+  onEdit,
+  onDelete,
+  onSort,
+  "data-testid": testId = "expenses-table",
+}) => {
   /**
    * Formats amount to PLN currency format
    */

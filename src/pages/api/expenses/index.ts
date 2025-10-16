@@ -1,5 +1,4 @@
 import type { APIRoute } from "astro";
-import { z } from "zod";
 
 import { createSupabaseServerInstance } from "../../../db/supabase.client";
 import { createExpenseSchema, getExpensesSchema } from "../../../lib/expense.validation";
@@ -34,7 +33,7 @@ export const POST: APIRoute = async (context) => {
     let requestBody: unknown;
     try {
       requestBody = await context.request.json();
-    } catch (error) {
+    } catch {
       return new Response(
         JSON.stringify({
           error: "Invalid JSON in request body",

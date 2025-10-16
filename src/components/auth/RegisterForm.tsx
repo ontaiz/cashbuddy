@@ -148,7 +148,9 @@ const RegisterForm: FC = () => {
   return (
     <Card className="w-full max-w-md">
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold" data-testid="register-title">Utwórz konto</CardTitle>
+        <CardTitle className="text-2xl font-bold" data-testid="register-title">
+          Utwórz konto
+        </CardTitle>
         <CardDescription>Wprowadź swoje dane, aby założyć nowe konto</CardDescription>
       </CardHeader>
 
@@ -168,7 +170,6 @@ const RegisterForm: FC = () => {
               aria-invalid={!!errors.email}
               aria-describedby={errors.email ? "email-error" : undefined}
               autoComplete="email"
-              autoFocus
               data-testid="register-email-input"
             />
             {errors.email && (
@@ -231,7 +232,13 @@ const RegisterForm: FC = () => {
         </CardContent>
 
         <CardFooter className="flex flex-col space-y-4">
-          <Button type="submit" disabled={!isFormValid || isSubmitting} className="w-full" size="lg" data-testid="register-submit-button">
+          <Button
+            type="submit"
+            disabled={!isFormValid || isSubmitting}
+            className="w-full"
+            size="lg"
+            data-testid="register-submit-button"
+          >
             {isSubmitting ? (
               <>
                 <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-background border-t-transparent" />

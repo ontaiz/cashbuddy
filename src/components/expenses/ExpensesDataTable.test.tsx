@@ -31,14 +31,7 @@ describe("ExpensesDataTable", () => {
 
   describe("Rendering", () => {
     it("should render empty table when no expenses provided", () => {
-      render(
-        <ExpensesDataTable
-          expenses={[]}
-          onEdit={mockOnEdit}
-          onDelete={mockOnDelete}
-          onSort={mockOnSort}
-        />
-      );
+      render(<ExpensesDataTable expenses={[]} onEdit={mockOnEdit} onDelete={mockOnDelete} onSort={mockOnSort} />);
 
       // Desktop table should be present but empty
       expect(screen.getByRole("table")).toBeInTheDocument();
@@ -51,20 +44,15 @@ describe("ExpensesDataTable", () => {
 
     it("should render expenses in desktop table view", () => {
       const expenses = generateMockExpenses(3);
-      
-      render(
-        <ExpensesDataTable
-          expenses={expenses}
-          onEdit={mockOnEdit}
-          onDelete={mockOnDelete}
-          onSort={mockOnSort}
-        />
-      );
+
+      render(<ExpensesDataTable expenses={expenses} onEdit={mockOnEdit} onDelete={mockOnDelete} onSort={mockOnSort} />);
 
       // Check if all expenses are rendered (each appears in both desktop and mobile views)
       expenses.forEach((expense) => {
         expect(screen.getAllByText(expense.name)).toHaveLength(2); // Desktop + Mobile
-        expect(screen.getAllByText(expense.description!)).toHaveLength(2); // Desktop + Mobile
+        if (expense.description) {
+          expect(screen.getAllByText(expense.description)).toHaveLength(2); // Desktop + Mobile
+        }
       });
 
       // Check if action buttons are present (2 buttons per expense)
@@ -76,15 +64,8 @@ describe("ExpensesDataTable", () => {
 
     it("should render expenses in mobile card view", () => {
       const expenses = generateMockExpenses(2);
-      
-      render(
-        <ExpensesDataTable
-          expenses={expenses}
-          onEdit={mockOnEdit}
-          onDelete={mockOnDelete}
-          onSort={mockOnSort}
-        />
-      );
+
+      render(<ExpensesDataTable expenses={expenses} onEdit={mockOnEdit} onDelete={mockOnDelete} onSort={mockOnSort} />);
 
       // Mobile cards should be present (hidden by CSS but in DOM)
       expenses.forEach((expense) => {
@@ -98,7 +79,7 @@ describe("ExpensesDataTable", () => {
       const expenseWithoutDescription = generateMockExpense({
         description: null,
       });
-      
+
       render(
         <ExpensesDataTable
           expenses={[expenseWithoutDescription]}
@@ -124,19 +105,14 @@ describe("ExpensesDataTable", () => {
 
       testCases.forEach(({ amount, expected }) => {
         const expense = generateMockExpense({ amount });
-        
+
         const { unmount } = render(
-          <ExpensesDataTable
-            expenses={[expense]}
-            onEdit={mockOnEdit}
-            onDelete={mockOnDelete}
-            onSort={mockOnSort}
-          />
+          <ExpensesDataTable expenses={[expense]} onEdit={mockOnEdit} onDelete={mockOnDelete} onSort={mockOnSort} />
         );
 
         // Should appear in both desktop and mobile views
         expect(screen.getAllByText(expected)).toHaveLength(2);
-        
+
         // Clean up for next iteration
         unmount();
       });
@@ -151,19 +127,14 @@ describe("ExpensesDataTable", () => {
 
       testCases.forEach(({ date, expected }) => {
         const expense = generateMockExpense({ date });
-        
+
         const { unmount } = render(
-          <ExpensesDataTable
-            expenses={[expense]}
-            onEdit={mockOnEdit}
-            onDelete={mockOnDelete}
-            onSort={mockOnSort}
-          />
+          <ExpensesDataTable expenses={[expense]} onEdit={mockOnEdit} onDelete={mockOnDelete} onSort={mockOnSort} />
         );
 
         // Should appear in both desktop and mobile views
         expect(screen.getAllByText(expected)).toHaveLength(2);
-        
+
         // Clean up for next iteration
         unmount();
       });
@@ -174,15 +145,8 @@ describe("ExpensesDataTable", () => {
     it("should call onSort with 'amount' when amount header is clicked", async () => {
       const user = userEvent.setup();
       const expenses = generateMockExpenses(1);
-      
-      render(
-        <ExpensesDataTable
-          expenses={expenses}
-          onEdit={mockOnEdit}
-          onDelete={mockOnDelete}
-          onSort={mockOnSort}
-        />
-      );
+
+      render(<ExpensesDataTable expenses={expenses} onEdit={mockOnEdit} onDelete={mockOnDelete} onSort={mockOnSort} />);
 
       const amountSortButton = screen.getByRole("button", { name: /kwota/i });
       await user.click(amountSortButton);
@@ -194,15 +158,8 @@ describe("ExpensesDataTable", () => {
     it("should call onSort with 'date' when date header is clicked", async () => {
       const user = userEvent.setup();
       const expenses = generateMockExpenses(1);
-      
-      render(
-        <ExpensesDataTable
-          expenses={expenses}
-          onEdit={mockOnEdit}
-          onDelete={mockOnDelete}
-          onSort={mockOnSort}
-        />
-      );
+
+      render(<ExpensesDataTable expenses={expenses} onEdit={mockOnEdit} onDelete={mockOnDelete} onSort={mockOnSort} />);
 
       const dateSortButton = screen.getByRole("button", { name: /data/i });
       await user.click(dateSortButton);
@@ -214,14 +171,9 @@ describe("ExpensesDataTable", () => {
     it("should call onEdit with correct expense when edit button is clicked", async () => {
       const user = userEvent.setup();
       const expense = generateMockExpense();
-      
+
       render(
-        <ExpensesDataTable
-          expenses={[expense]}
-          onEdit={mockOnEdit}
-          onDelete={mockOnDelete}
-          onSort={mockOnSort}
-        />
+        <ExpensesDataTable expenses={[expense]} onEdit={mockOnEdit} onDelete={mockOnDelete} onSort={mockOnSort} />
       );
 
       const editButtons = screen.getAllByLabelText("Edytuj wydatek");
@@ -234,14 +186,9 @@ describe("ExpensesDataTable", () => {
     it("should call onDelete with correct expense ID when delete button is clicked", async () => {
       const user = userEvent.setup();
       const expense = generateMockExpense();
-      
+
       render(
-        <ExpensesDataTable
-          expenses={[expense]}
-          onEdit={mockOnEdit}
-          onDelete={mockOnDelete}
-          onSort={mockOnSort}
-        />
+        <ExpensesDataTable expenses={[expense]} onEdit={mockOnEdit} onDelete={mockOnDelete} onSort={mockOnSort} />
       );
 
       const deleteButtons = screen.getAllByLabelText("Usuń wydatek");
@@ -254,15 +201,8 @@ describe("ExpensesDataTable", () => {
     it("should handle multiple expenses interactions correctly", async () => {
       const user = userEvent.setup();
       const expenses = generateMockExpenses(3);
-      
-      render(
-        <ExpensesDataTable
-          expenses={expenses}
-          onEdit={mockOnEdit}
-          onDelete={mockOnDelete}
-          onSort={mockOnSort}
-        />
-      );
+
+      render(<ExpensesDataTable expenses={expenses} onEdit={mockOnEdit} onDelete={mockOnDelete} onSort={mockOnSort} />);
 
       const editButtons = screen.getAllByLabelText("Edytuj wydatek");
       const deleteButtons = screen.getAllByLabelText("Usuń wydatek");
@@ -283,14 +223,9 @@ describe("ExpensesDataTable", () => {
   describe("Accessibility", () => {
     it("should have proper ARIA labels for action buttons", () => {
       const expense = generateMockExpense();
-      
+
       render(
-        <ExpensesDataTable
-          expenses={[expense]}
-          onEdit={mockOnEdit}
-          onDelete={mockOnDelete}
-          onSort={mockOnSort}
-        />
+        <ExpensesDataTable expenses={[expense]} onEdit={mockOnEdit} onDelete={mockOnDelete} onSort={mockOnSort} />
       );
 
       // Check ARIA labels
@@ -300,15 +235,8 @@ describe("ExpensesDataTable", () => {
 
     it("should have proper table structure", () => {
       const expenses = generateMockExpenses(2);
-      
-      render(
-        <ExpensesDataTable
-          expenses={expenses}
-          onEdit={mockOnEdit}
-          onDelete={mockOnDelete}
-          onSort={mockOnSort}
-        />
-      );
+
+      render(<ExpensesDataTable expenses={expenses} onEdit={mockOnEdit} onDelete={mockOnDelete} onSort={mockOnSort} />);
 
       // Check table structure
       expect(screen.getByRole("table")).toBeInTheDocument();
@@ -321,14 +249,9 @@ describe("ExpensesDataTable", () => {
     it("should handle very long expense names", () => {
       const longName = faker.lorem.words(20); // Very long name
       const expense = generateMockExpense({ name: longName });
-      
+
       render(
-        <ExpensesDataTable
-          expenses={[expense]}
-          onEdit={mockOnEdit}
-          onDelete={mockOnDelete}
-          onSort={mockOnSort}
-        />
+        <ExpensesDataTable expenses={[expense]} onEdit={mockOnEdit} onDelete={mockOnDelete} onSort={mockOnSort} />
       );
 
       // Should appear in both desktop and mobile views
@@ -338,14 +261,9 @@ describe("ExpensesDataTable", () => {
     it("should handle very long descriptions", () => {
       const longDescription = faker.lorem.sentences(10); // Very long description
       const expense = generateMockExpense({ description: longDescription });
-      
+
       render(
-        <ExpensesDataTable
-          expenses={[expense]}
-          onEdit={mockOnEdit}
-          onDelete={mockOnDelete}
-          onSort={mockOnSort}
-        />
+        <ExpensesDataTable expenses={[expense]} onEdit={mockOnEdit} onDelete={mockOnDelete} onSort={mockOnSort} />
       );
 
       // Description should appear in both desktop and mobile views
@@ -354,14 +272,9 @@ describe("ExpensesDataTable", () => {
 
     it("should handle zero amount", () => {
       const expense = generateMockExpense({ amount: 0 });
-      
+
       render(
-        <ExpensesDataTable
-          expenses={[expense]}
-          onEdit={mockOnEdit}
-          onDelete={mockOnDelete}
-          onSort={mockOnSort}
-        />
+        <ExpensesDataTable expenses={[expense]} onEdit={mockOnEdit} onDelete={mockOnDelete} onSort={mockOnSort} />
       );
 
       // Should appear in both desktop and mobile views
@@ -370,14 +283,9 @@ describe("ExpensesDataTable", () => {
 
     it("should handle negative amounts", () => {
       const expense = generateMockExpense({ amount: -50.25 });
-      
+
       render(
-        <ExpensesDataTable
-          expenses={[expense]}
-          onEdit={mockOnEdit}
-          onDelete={mockOnDelete}
-          onSort={mockOnSort}
-        />
+        <ExpensesDataTable expenses={[expense]} onEdit={mockOnEdit} onDelete={mockOnDelete} onSort={mockOnSort} />
       );
 
       // Should appear in both desktop and mobile views

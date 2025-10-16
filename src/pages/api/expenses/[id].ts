@@ -88,7 +88,8 @@ export const GET: APIRoute = async (context) => {
     }
 
     // Transform to ExpenseDto (omit user_id for security)
-    const { user_id, ...expenseDto }: { user_id: string } & ExpenseDto = expense;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { user_id: _, ...expenseDto }: { user_id: string } & ExpenseDto = expense;
 
     // Return success response with the expense
     return new Response(JSON.stringify(expenseDto), {
@@ -244,7 +245,8 @@ export const PATCH: APIRoute = async (context) => {
     }
 
     // Transform to ExpenseDto (omit user_id for security)
-    const { user_id, ...expenseDto }: { user_id: string } & ExpenseDto = updatedExpense;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { user_id: _, ...expenseDto }: { user_id: string } & ExpenseDto = updatedExpense;
 
     // Return success response with the updated expense
     return new Response(JSON.stringify(expenseDto), {

@@ -34,4 +34,3 @@ export const createSupabaseServerInstance = (context: { headers: Headers; cookie
 
   return supabase;
 };
-
