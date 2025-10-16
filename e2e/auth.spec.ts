@@ -56,8 +56,8 @@ test.describe("Authentication", () => {
     const toastError = page.locator("[data-sonner-toast]").filter({ hasText: /błąd|invalid/i });
     const inlineError = page.getByTestId("error-message");
 
-    // Either toast or inline error should be visible
-    await expect(toastError.or(inlineError)).toBeVisible();
+    // Either toast or inline error should be visible (use first() to handle both appearing)
+    await expect(toastError.or(inlineError).first()).toBeVisible();
   });
 
   test("should navigate to register page", async ({ page }) => {
